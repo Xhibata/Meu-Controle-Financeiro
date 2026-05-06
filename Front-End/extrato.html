@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Extrato</title>
+</head>
+
+<body>
+
+    <h2>Extrato</h2>
+
+    <h3 id="saldo"></h3>
+
+    <ul id="lista"></ul>
+
+    <script>
+        function carregarExtrato() {
+            const lista = document.getElementById("lista");
+            const saldoEl = document.getElementById("saldo");
+
+            lista.innerHTML = "";
+
+            const despesas = JSON.parse(localStorage.getItem("despesas")) || [];
+
+            let total = 0;
+
+            despesas.forEach(d => {
+                const item = document.createElement("li");
+                item.textContent = `${d.nome} - R$ ${d.valor.toFixed(2)}`;
+                lista.appendChild(item);
+
+                total += d.valor;
+            });
+
+            saldoEl.textContent = "Total gasto: R$ " + total.toFixed(2);
+        }
+
+        carregarExtrato();
+
+        setInterval(() => {
+            carregarExtrato();
+        }, 1000);
+
+        window.addEventListener("storage", () => {
+            carregarExtrato();
+        });
+    </script>
+
+</body>
+
+</html>
