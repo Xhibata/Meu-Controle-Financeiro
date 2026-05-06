@@ -24,7 +24,7 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Conversão De Moeda</a>
+          <a class="nav-link" href="conversor.html">Conversão De Moeda</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="extrato.html">Extrato</a>
@@ -36,11 +36,11 @@
     </div>
   </nav>
 
-  <main role="main" class="container" style="margin-top:80px;">
+  <main role="main" class="containerSaldo" style="margin-top:80px;">
 
-    <div class="row">
+    <div class="row justify-content-center">
 
-      <div class="col-md-6">
+      <div class="col-12 mb-3">
         <div class="card">
           <div class="card-body">
             <h4>Saldo Atual</h4>
@@ -53,7 +53,7 @@
         </div>
       </div>
 
-      <div class="col-md-6">
+      <div class="col-12">
         <div class="card">
           <div class="card-body">
             <h4>Transações Recentes</h4>
@@ -80,28 +80,15 @@
         </div>
 
         <div class="modal-body">
-          <input 
-            type="number" 
-            id="valorSaldo"
-            class="form-control"
-            placeholder="Digite o valor"
-          >
+          <input type="number" id="valorSaldo" class="form-control" placeholder="Digite o valor">
         </div>
 
         <div class="modal-footer">
-          <button 
-            type="button" 
-            class="btn btn-success"
-            onclick="adicionarSaldo()"
-          >
+          <button type="button" class="btn btn-success" onclick="adicionarSaldo()">
             Confirmar
           </button>
 
-          <button 
-            type="button" 
-            class="btn btn-secondary"
-            data-dismiss="modal"
-          >
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
             Fechar
           </button>
         </div>
