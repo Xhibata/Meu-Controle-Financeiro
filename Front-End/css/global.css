@@ -1,0 +1,12 @@
+body {
+    background: url("../Fotos/rm378-05.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    padding-top: 70px;
+}
+
+.card {
+    border-radius: 10px;
+}
