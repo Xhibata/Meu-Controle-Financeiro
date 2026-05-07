@@ -1,12 +1,18 @@
+html,
 body {
-    background: url("../Fotos/rm378-05.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-
-    padding-top: 70px;
+    height: 100%;
 }
 
-.card {
-    border-radius: 10px;
+body {
+    background-image: url('../Fotos/rm378-05.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+}
+
+/* REMOVE O FUNDO BRANCO DO TEMPLATE */
+.wrapper,
+#content {
+    background: transparent !important;
 }

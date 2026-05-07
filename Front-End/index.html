@@ -1,168 +1,246 @@
 <!doctype html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
-  <title>Projeto Controle Financeiro</title>
+    <title>Projeto Controle Financeiro</title>
 
-  <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/global.css" />
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
-</head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    />
 
-<body>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
 
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="index.html">Cofrinho Digital</a>
+    <link rel="stylesheet" href="css/sidebar.css" />
+  </head>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <body>
+    <div class="wrapper d-flex align-items-stretch">
+      <!-- SIDEBAR -->
+      <nav id="sidebar">
+        <div class="custom-menu">
+          <button type="button" id="sidebarCollapse" class="btn btn-primary">
+            <i class="fa fa-bars" style="color: white"></i>
+          </button>
+        </div>
 
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="conversor.html">Conversão De Moeda</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="extrato.html">Extrato</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="criardespesas.html">Criar Despesa</a>
-        </li>
-      </ul>
+        <h1>
+          <a
+            href="index.html"
+            class="logo"
+            style="padding: 30px; font-size: 24px"
+          >
+            Cofrinho Digital
+          </a>
+        </h1>
+
+        <ul class="list-unstyled components">
+          <li class="active">
+            <a href="index.html">
+              <span class="fa fa-home mr-3"></span>
+              Início
+            </a>
+          </li>
+
+          <li>
+            <a href="conversor.html">
+              <span class="fa fa-dollar mr-3"></span>
+              Conversor
+            </a>
+          </li>
+
+          <li>
+            <a href="extrato.html">
+              <span class="fa fa-file-text mr-3"></span>
+              Extrato
+            </a>
+          </li>
+
+          <li>
+            <a href="criardespesas.html">
+              <span class="fa fa-plus mr-3"></span>
+              Criar Despesa
+            </a>
+          </li>
+        </ul>
+
+        <div
+          style="
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: white;
+          "
+        >
+        <a href="https://github.com/Xhibata" target="_blank" style="color: white; text-decoration: none">
+          <i class="fa fa-github mr-2"></i>
+          Desenvolvido por @Xhibata
+        </a>
+      </div>
+    </nav>
+
+      <!-- CONTEÚDO -->
+      <div id="content">
+        <main role="main" class="container">
+          <div class="row justify-content-center mt-5">
+            <div class="col-12 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <h4>Saldo Atual</h4>
+                  <h2 id="saldo">R$ 0,00</h2>
+                </div>
+
+                <button class="btn btn-primary m-2" onclick="abrirPopup()">
+                  Adicionar Saldo
+                </button>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <h4>Transações Recentes</h4>
+
+                  <ul id="recentes" class="list-group"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
     </div>
-  </nav>
 
-  <main role="main" class="container mt-5">
+    <!-- MODAL -->
+    <div class="modal fade" id="popupSaldo" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Adicionar Saldo</h5>
 
-    <div class="row justify-content-center">
-
-      <div class="col-12 mb-3">
-        <div class="card">
-          <div class="card-body">
-            <h4>Saldo Atual</h4>
-            <h2 id="saldo">R$ 0,00</h2>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
           </div>
 
-          <button class="btn btn-primary m-2" onclick="abrirPopup()">
-            Adicionar Saldo
-          </button>
-        </div>
-      </div>
+          <div class="modal-body">
+            <input
+              type="number"
+              id="valorSaldo"
+              class="form-control"
+              placeholder="Digite o valor"
+            />
+          </div>
 
-      <div class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <h4>Transações Recentes</h4>
-            <ul id="recentes" class="list-group"></ul>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-success"
+              onclick="adicionarSaldo()"
+            >
+              Confirmar
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Fechar
+            </button>
           </div>
         </div>
       </div>
-
     </div>
 
-  </main>
+    <!-- SCRIPT -->
+    <script>
+      function carregarDashboard() {
+        const saldoEl = document.getElementById("saldo");
+        const lista = document.getElementById("recentes");
 
-  <div class="modal fade" id="popupSaldo" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+        const despesas = JSON.parse(localStorage.getItem("despesas")) || [];
 
-      <div class="modal-content">
+        const saldoAdicionado =
+          parseFloat(localStorage.getItem("saldoAdicionado")) || 0;
 
-        <div class="modal-header">
-          <h5 class="modal-title">Adicionar Saldo</h5>
+        lista.innerHTML = "";
 
-          <button type="button" class="close" data-dismiss="modal">
-            <span>&times;</span>
-          </button>
-        </div>
+        let totalDespesas = 0;
 
-        <div class="modal-body">
-          <input type="number" id="valorSaldo" class="form-control" placeholder="Digite o valor">
-        </div>
+        despesas.forEach((d) => {
+          totalDespesas += d.valor;
+        });
 
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success" onclick="adicionarSaldo()">
-            Confirmar
-          </button>
+        const saldoFinal = saldoAdicionado - totalDespesas;
 
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Fechar
-          </button>
-        </div>
+        saldoEl.textContent = "R$ " + saldoFinal.toFixed(2);
 
-      </div>
+        const recentes = despesas.slice(-5).reverse();
 
-    </div>
-  </div>
+        recentes.forEach((d) => {
+          const item = document.createElement("li");
 
-  <script>
-    function carregarDashboard() {
-      const saldoEl = document.getElementById("saldo");
-      const lista = document.getElementById("recentes");
+          item.classList.add("list-group-item");
 
-      const despesas = JSON.parse(localStorage.getItem("despesas")) || [];
-      const saldoAdicionado = parseFloat(localStorage.getItem("saldoAdicionado")) || 0;
+          item.textContent = `${d.nome} - R$ ${d.valor.toFixed(2)}`;
 
-      lista.innerHTML = "";
-
-      let totalDespesas = 0;
-
-      despesas.forEach(d => {
-        totalDespesas += d.valor;
-      });
-
-      const saldoFinal = saldoAdicionado - totalDespesas;
-
-      saldoEl.textContent = "R$ " + saldoFinal.toFixed(2);
-
-      const recentes = despesas.slice(-5).reverse();
-
-      recentes.forEach(d => {
-        const item = document.createElement("li");
-        item.classList.add("list-group-item");
-        item.textContent = `${d.nome} - R$ ${d.valor.toFixed(2)}`;
-        lista.appendChild(item);
-      });
-    }
-
-    function abrirPopup() {
-      $('#popupSaldo').modal('show');
-    }
-
-    function adicionarSaldo() {
-      const input = document.getElementById("valorSaldo");
-      const valor = parseFloat(input.value);
-
-      if (isNaN(valor) || valor <= 0) {
-        alert("Digite um valor válido!");
-        return;
+          lista.appendChild(item);
+        });
       }
 
-      let saldoAdicionado = parseFloat(localStorage.getItem("saldoAdicionado")) || 0;
+      function abrirPopup() {
+        $("#popupSaldo").modal("show");
+      }
 
-      saldoAdicionado += valor;
+      function adicionarSaldo() {
+        const input = document.getElementById("valorSaldo");
 
-      localStorage.setItem("saldoAdicionado", saldoAdicionado);
+        const valor = parseFloat(input.value);
 
-      input.value = "";
+        if (isNaN(valor) || valor <= 0) {
+          alert("Digite um valor válido!");
 
-      $('#popupSaldo').modal('hide');
+          return;
+        }
+
+        let saldoAdicionado =
+          parseFloat(localStorage.getItem("saldoAdicionado")) || 0;
+
+        saldoAdicionado += valor;
+
+        localStorage.setItem("saldoAdicionado", saldoAdicionado);
+
+        input.value = "";
+
+        $("#popupSaldo").modal("hide");
+
+        carregarDashboard();
+      }
 
       carregarDashboard();
-    }
 
-    carregarDashboard();
+      setInterval(carregarDashboard, 1000);
 
     window.addEventListener("storage", carregarDashboard);
   </script>
 
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
 
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
 
+    <!-- SIDEBAR -->
+    <script src="js/main.js"></script>
+  </body>
 </html>
