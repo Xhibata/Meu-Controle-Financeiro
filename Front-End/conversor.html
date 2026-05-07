@@ -30,29 +30,29 @@
       </h1>
 
       <ul class="list-unstyled components">
-        <li class="active">
-          <a href="index.html">
+        <li>
+          <a href="index.html" style="font-weight: bold;">
             <span class="fa fa-home mr-3"></span>
             Início
           </a>
         </li>
 
         <li>
-          <a href="criardespesas.html">
+          <a href="criardespesas.html" style="font-weight: bold;">
             <span class="fa fa-plus mr-3"></span>
             Criar Despesa
           </a>
         </li>
 
         <li>
-          <a href="extrato.html">
+          <a href="extrato.html" style="font-weight: bold;">
             <span class="fa fa-file-text mr-3"></span>
             Extrato
           </a>
         </li>
 
-        <li>
-          <a href="conversor.html">
+        <li class="active">
+          <a href="conversor.html" style="font-weight: bold;">
             <span class="fa fa-dollar mr-3"></span>
             Conversor
           </a>
@@ -86,7 +86,7 @@
                   <div class="form-group">
                     <label for="valor"> Valor </label>
 
-                    <input type="number" class="form-control" id="valor" placeholder="Digite o valor" required />
+                    <input type="number" class="form-control" id="valor" min="0" step="2.50" required />
                   </div>
 
                   <div class="form-group">
@@ -116,8 +116,7 @@
                   </button>
                 </form>
 
-                <div id="resultado" class="alert alert-info mt-4 text-center">
-                  Nenhuma conversão realizada.
+                <div id="resultado">
                 </div>
               </div>
             </div>

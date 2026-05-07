@@ -1,24 +1,41 @@
-html,
-body {
-    height: 100%;
+html {
+    background-color: #0f0f1a !important;
 }
 
 body {
+    height: 100%;
     background-image: url('../assets/rm378-05.jpg') !important;
     background-size: cover !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
+    background-color: #0f0f1a !important;
+    min-height: 100vh;
+    animation: fadeIn 0.3s ease-in-out;
+    font-family: "Press Start 2P", system-ui;
 }
 
-/* REMOVE O FUNDO BRANCO DO TEMPLATE */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
 
+/* Garante transparência na estrutura da sidebar */
+.wrapper,
+#content,
+#sidebar {
+    background-color: transparent !important;
+}
 
-/* CORRIGE OS CARDS QUEBRADOS PELA SIDEBAR */
 #content .card {
     background-color: #fff !important;
     border: 1px solid rgba(0,0,0,.125) !important;
     border-radius: 0.25rem !important;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff !important;
+    border: 8px solid rgba(0,0,0,.125) !important;
+    border-radius: 0.5rem !important;
 }
 
 #content .card.shadow {
@@ -40,4 +57,29 @@ body {
     background-color: #e9ecef !important;
     border: 1px solid #ced4da !important;
     color: #495057 !important;
+}
+
+/* ESPAÇAMENTO DO TOPO PARA NÃO SOBREPOR O BOTÃO DA SIDEBAR */
+#content main {
+    padding-top: 60px !important;
+}
+
+/* Alternativa: espaço extra só no mobile */
+@media (max-width: 768px) {
+    #content main {
+        padding-top: 70px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    body.sidebar-open::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9998;
+    }
 }

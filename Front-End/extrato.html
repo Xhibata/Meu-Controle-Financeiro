@@ -30,29 +30,29 @@
       </h1>
 
       <ul class="list-unstyled components">
-        <li class="active">
-          <a href="index.html">
+        <li>
+          <a href="index.html" style="font-weight: bold;">
             <span class="fa fa-home mr-3"></span>
             Início
           </a>
         </li>
 
         <li>
-          <a href="criardespesas.html">
+          <a href="criardespesas.html" style="font-weight: bold;">
             <span class="fa fa-plus mr-3"></span>
             Criar Despesa
           </a>
         </li>
 
-        <li>
-          <a href="extrato.html">
+        <li class="active">
+          <a href="extrato.html" style="font-weight: bold;">
             <span class="fa fa-file-text mr-3"></span>
             Extrato
           </a>
         </li>
 
         <li>
-          <a href="conversor.html">
+          <a href="conversor.html" style="font-weight: bold;">
             <span class="fa fa-dollar mr-3"></span>
             Conversor
           </a>
@@ -80,14 +80,14 @@
           <div class="col-md-8">
             <div class="card shadow">
               <div class="card-body">
-                <h2 class="mb-4">Extrato</h2>
+                <h2 class="mb-4 text-center">Extrato</h2>
 
-                <h4 id="saldoAtual" class="mb-4 text-success">
-                  Saldo Atual: R$ 0,00
+                <h4 id="saldoAtual" class="mb-4 text-success text-center">
+                  Saldo Atual R$ 0,00
                 </h4>
 
-                <h4 id="saldo" class="mb-4 text-danger">
-                  Total gasto: R$ 0,00
+                <h4 id="saldo" class="mb-4 text-danger text-center">
+                  Total gasto R$ 0,00
                 </h4>
 
                 <ul id="lista" class="list-group"></ul>
@@ -133,10 +133,10 @@
         total += d.valor;
       });
 
-      totalEl.textContent = "Total gasto: R$ " + total.toFixed(2);
+      totalEl.textContent = "Total gasto R$ " + total.toFixed(2);
 
       const saldoFinal = saldoAdicionado - total;
-      saldoAtualEl.textContent = "Saldo Atual: R$ " + saldoFinal.toFixed(2);
+      saldoAtualEl.textContent = "Saldo Atual R$ " + saldoFinal.toFixed(2);
 
       if (saldoFinal > 0) {
         saldoAtualEl.classList.remove("text-danger");

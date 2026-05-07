@@ -30,29 +30,29 @@
       </h1>
 
       <ul class="list-unstyled components">
-        <li class="active">
-          <a href="index.html">
+        <li>
+          <a href="index.html" style="font-weight: bold;">
             <span class="fa fa-home mr-3"></span>
             Início
           </a>
         </li>
 
-        <li>
-          <a href="criardespesas.html">
+        <li class="active">
+          <a href="criardespesas.html" style="font-weight: bold;">
             <span class="fa fa-plus mr-3"></span>
             Criar Despesa
           </a>
         </li>
 
         <li>
-          <a href="extrato.html">
+          <a href="extrato.html" style="font-weight: bold;">
             <span class="fa fa-file-text mr-3"></span>
             Extrato
           </a>
         </li>
 
         <li>
-          <a href="conversor.html">
+          <a href="conversor.html" style="font-weight: bold;">
             <span class="fa fa-dollar mr-3"></span>
             Conversor
           </a>
@@ -80,13 +80,13 @@
           <div class="col-md-6">
             <div class="card shadow">
               <div class="card-body">
-                <h2 class="mb-4">Nova Despesa</h2>
+                <h2 class="mb-4 text-center">Nova Despesa</h2>
 
                 <form onsubmit="criarDespesa(event)">
                   <div class="form-group">
                     <label for="nome"> Nome da despesa </label>
 
-                    <input type="text" id="nome" class="form-control" placeholder="Digite o nome da despesa" required />
+                    <input type="text" id="nome" class="form-control" required />
                   </div>
 
                   <div class="form-group">
@@ -97,7 +97,7 @@
                         <span class="input-group-text"> R$ </span>
                       </div>
 
-                      <input type="number" id="valor" class="form-control" step="0.01" placeholder="0.00" required />
+                      <input type="number" id="valor" class="form-control" min="0" step="2.50" required />
                     </div>
                   </div>
 

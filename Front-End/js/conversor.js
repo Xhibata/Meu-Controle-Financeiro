@@ -3,6 +3,7 @@ async function converter() {
     const de = document.getElementById("moedaOrigem").value;
     const para = document.getElementById("moedaDestino").value;
 
+
     if (isNaN(valor) || valor <= 0) {
         document.getElementById("resultado").innerText = "Digite um valor válido.";
         return;
@@ -18,6 +19,7 @@ async function converter() {
             return;
         }
 
+        document.getElementById("resultado").classList.add("alert", "alert-info", "mt-4", "text-center");
         document.getElementById("resultado").innerText =
             `${valor} ${de} = ${data.result.toFixed(2)} ${para}`;
 
