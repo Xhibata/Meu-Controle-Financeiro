@@ -3,77 +3,111 @@
 
 <head>
   <meta charset="UTF-8" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Extrato</title>
+  <title>Cofrinho Digital</title>
+  <link rel="shortcut icon" href="assets/vault.ico" type="image/x-icon" />
 
   <link rel="stylesheet" href="css/global.css" />
-
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="index.html"> Cofrinho Digital </a>
+  <div class="wrapper d-flex align-items-stretch">
+    <!-- SIDEBAR -->
+    <nav id="sidebar">
+      <div class="custom-menu">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary">
+          <i class="fa fa-bars" style="color: white"></i>
+        </button>
+      </div>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+      <h1>
+        <a href="index.html" class="logo" style="padding: 30px; font-size: 24px">
+          Cofrinho Digital
+        </a>
+      </h1>
 
-    <div class="collapse navbar-collapse" id="navbar">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="conversor.html"> Conversão De Moeda </a>
+      <ul class="list-unstyled components">
+        <li class="active">
+          <a href="index.html">
+            <span class="fa fa-home mr-3"></span>
+            Início
+          </a>
         </li>
 
-        <li class="nav-item active">
-          <a class="nav-link" href="extrato.html"> Extrato </a>
+        <li>
+          <a href="criardespesas.html">
+            <span class="fa fa-plus mr-3"></span>
+            Criar Despesa
+          </a>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="criardespesas.html"> Criar Despesa </a>
+        <li>
+          <a href="extrato.html">
+            <span class="fa fa-file-text mr-3"></span>
+            Extrato
+          </a>
+        </li>
+
+        <li>
+          <a href="conversor.html">
+            <span class="fa fa-dollar mr-3"></span>
+            Conversor
+          </a>
         </li>
       </ul>
-    </div>
-  </nav>
 
-  <main class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="card shadow">
-          <div class="card-body">
-            <h2 class="mb-4">Extrato</h2>
+      <div style="
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: white;
+          ">
+        <a href="https://github.com/Xhibata" target="_blank" style="color: white; text-decoration: none">
+          <i class="fa fa-github mr-2"></i>
+          Desenvolvido por @Xhibata
+        </a>
+      </div>
+    </nav>
 
-            <h4 id="saldoAtual" class="mb-4 text-success">
-              Saldo Atual: R$ 0,00
-            </h4>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div id="content">
+      <main class="container mt-5">
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <div class="card shadow">
+              <div class="card-body">
+                <h2 class="mb-4">Extrato</h2>
 
-            <h4 id="saldo" class="mb-4 text-danger">
-              Total gasto: R$ 0,00
-            </h4>
+                <h4 id="saldoAtual" class="mb-4 text-success">
+                  Saldo Atual: R$ 0,00
+                </h4>
 
-            <ul id="lista" class="list-group"></ul>
+                <h4 id="saldo" class="mb-4 text-danger">
+                  Total gasto: R$ 0,00
+                </h4>
+
+                <ul id="lista" class="list-group"></ul>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
-  </main>
+  </div>
 
   <script>
     function carregarExtrato() {
       const lista = document.getElementById("lista");
-
       const totalEl = document.getElementById("saldo");
-
       const saldoAtualEl = document.getElementById("saldoAtual");
 
       lista.innerHTML = "";
 
-      // Recupera despesas
       const despesas = JSON.parse(localStorage.getItem("despesas")) || [];
-
-      // Recupera saldo adicionado
       const saldoAdicionado =
         parseFloat(localStorage.getItem("saldoAdicionado")) || 0;
 
@@ -81,7 +115,6 @@
 
       despesas.forEach((d) => {
         const item = document.createElement("li");
-
         item.classList.add(
           "list-group-item",
           "d-flex",
@@ -90,49 +123,42 @@
         );
 
         item.innerHTML = `
-      <span>${d.nome}</span>
-
-      <span class="badge badge-danger badge-pill">
-        R$ ${d.valor.toFixed(2)}
-      </span>
-     `;
+            <span>${d.nome}</span>
+            <span class="badge badge-danger badge-pill">
+              R$ ${d.valor.toFixed(2)}
+            </span>
+          `;
 
         lista.appendChild(item);
-
         total += d.valor;
       });
 
-      totalEl.textContent =
-        "Total gasto: R$ " + total.toFixed(2);
+      totalEl.textContent = "Total gasto: R$ " + total.toFixed(2);
 
       const saldoFinal = saldoAdicionado - total;
-
-      saldoAtualEl.textContent =
-        "Saldo Atual: R$ " + saldoFinal.toFixed(2);
+      saldoAtualEl.textContent = "Saldo Atual: R$ " + saldoFinal.toFixed(2);
 
       if (saldoFinal > 0) {
         saldoAtualEl.classList.remove("text-danger");
         saldoAtualEl.classList.add("text-success");
-
       } else if (saldoFinal < 0) {
         saldoAtualEl.classList.remove("text-success");
         saldoAtualEl.classList.add("text-danger");
-
       } else {
         saldoAtualEl.classList.remove("text-success");
         saldoAtualEl.classList.remove("text-danger");
         saldoAtualEl.classList.add("text-warning");
       }
     }
-    carregarExtrato();
 
+    carregarExtrato();
     window.addEventListener("storage", carregarExtrato);
   </script>
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
 </body>
 
 </html>

@@ -8330,3 +8330,14 @@ a[data-toggle="collapse"] {
 
 .subscribe-form .form-control {
   background: #4897fc; }
+
+  /* Remove o espaço entre o título e o menu */
+#sidebar h1 {
+    margin-bottom: 0 !important;  /* Elimina margem inferior do h1 */
+    padding-bottom: 0px !important;  /* Ajuste fino - pode mudar ou zerar */
+}
+
+#sidebar ul.components {
+    margin-top: 0 !important;  /* Elimina margem superior da lista */
+    padding-top: 0 !important;  /* Garante que não há padding sobrando */
+}
