@@ -1,13 +1,83 @@
+.popup-saldo {
+    border-radius: 20px !important;
+    border: none !important;
+    padding: 25px !important;
+    background: white !important;
+    box-shadow: 0 0 25px rgba(0,0,0,0.3);
+}
+
+.popup-saldo .modal-header {
+    border-bottom: none !important;
+    justify-content: center;
+    position: relative;
+}
+
+.popup-saldo .modal-title {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+}
+
+.popup-saldo .close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+}
+
+.popup-saldo .modal-footer {
+    border-top: none !important;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.input-saldo {
+    height: 50px !important;
+    border-radius: 10px !important;
+    font-size: 18px !important;
+}
+
+.btn-extrato,
+.btn-confirmar,
+.btn-fechar {
+    border: none !important;
+    padding: 12px 25px !important;
+    border-radius: 10px !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    color: white !important;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-extrato,
+.btn-confirmar {
+    background: #28a745 !important;
+}
+
+.btn-extrato:hover,
+.btn-confirmar:hover {
+    background: #218838 !important;
+    transform: scale(1.05);
+}
+
+.btn-fechar {
+    background: #dc3545 !important;
+}
+
+.btn-fechar:hover {
+    background: #c82333 !important;
+    transform: scale(1.05);
+}
+
 .popup {
     display: none;
     position: fixed;
     inset: 0;
-
     background: rgba(0, 0, 0, 0.5);
-
     justify-content: center;
     align-items: center;
-
     z-index: 9999;
 }
 
@@ -16,52 +86,5 @@
     padding: 35px;
     border-radius: 15px;
     text-align: center;
-
     z-index: 10000;
-}
-
-.btn-extrato,
-.btn-fechar {
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-
-    font-size: 12px;
-    font-weight: bold;
-
-    cursor: pointer;
-
-    transition: 0.3s;
-}
-
-.btn-extrato {
-    background-color: #28a745;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    color: white;
-}
-
-.btn-extrato:hover {
-    background-color: #28a745;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    color: white;
-}
-
-.btn-fechar {
-    background-color: #b92626;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    color: white;
-}
-
-.btn-fechar:hover {
-    background-color: #b92626;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    color: white;
 }

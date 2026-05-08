@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
   <link rel="stylesheet" href="css/sidebar.css" />
+  <link rel="stylesheet" href="css/popup.css" />
 </head>
 
 <body>
@@ -84,7 +85,7 @@
                 <h2 id="saldo" class="text-center">R$ 0,00</h2>
               </div>
 
-              <button class="btn btn-primary m-2" onclick="abrirPopup()">
+              <button class="btn btn-primary m-2" onclick="abrirModalSaldo()">
                 Adicionar Saldo
               </button>
             </div>
@@ -103,9 +104,10 @@
       </main>
     </div>
   </div>
-  <div class="modal fade" id="popupSaldo" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
+  <div class="modal fade" id="modalSaldo" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content popup-saldo">
+
         <div class="modal-header">
           <h5 class="modal-title">Adicionar Saldo</h5>
 
@@ -115,46 +117,28 @@
         </div>
 
         <div class="modal-body">
-          <input type="number" id="valorSaldo" class="form-control" placeholder="Digite o valor" style="
-                  height: 45px;
-                  border: 1px solid #ced4da;
-                  padding: 10px;
-                  font-size: 16px;
-                 background: white;
-                " />
+          <input type="number" id="valorSaldo" class="form-control input-saldo" placeholder="Digite o valor">
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-success" onclick="adicionarSaldo()" style="
-                background-color: #28a745;
-                border: none;
-                padding: 10px 20px;
-                font-size: 16px;
-                color: white;
-              ">
+          <button class="btn-confirmar" onclick="adicionarSaldo()">
             Confirmar
           </button>
 
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" style="
-                background-color: #b92626;
-                 border: none;
-                padding: 10px 20px;
-                font-size: 16px;
-                color: white;
-              ">
+          <button class="btn-fechar" data-dismiss="modal">
             Fechar
           </button>
         </div>
+
       </div>
     </div>
+  </div>
 
-    <script src="js/index.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
-    <script src="js/main.js"></script>
+  <script src="js/index.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
 </body>
 
 </html>
-
-como eu deixo o popup no meio da tela?

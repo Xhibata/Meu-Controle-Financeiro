@@ -1,68 +1,65 @@
 function carregarDashboard() {
-      const saldoEl = document.getElementById("saldo");
-      const lista = document.getElementById("recentes");
+  const saldoEl = document.getElementById("saldo");
+  const lista = document.getElementById("recentes");
 
-      const despesas = JSON.parse(localStorage.getItem("despesas")) || [];
+  const despesas = JSON.parse(localStorage.getItem("despesas")) || [];
+  const saldoAdicionado = parseFloat(localStorage.getItem("saldoAdicionado")) || 0;
 
-      const saldoAdicionado =
-        parseFloat(localStorage.getItem("saldoAdicionado")) || 0;
+  lista.innerHTML = "";
 
-      lista.innerHTML = "";
+  let totalDespesas = 0;
 
-      let totalDespesas = 0;
+  despesas.forEach((d) => {
+    totalDespesas += d.valor;
+  });
 
-      despesas.forEach((d) => {
-        totalDespesas += d.valor;
-      });
+  const saldoFinal = saldoAdicionado - totalDespesas;
 
-      const saldoFinal = saldoAdicionado - totalDespesas;
+  saldoEl.textContent = "R$ " + saldoFinal.toFixed(2);
 
-      saldoEl.textContent = "R$ " + saldoFinal.toFixed(2);
+  const recentes = despesas.slice(0, 5);
 
-      const recentes = despesas.slice(-5).reverse();
+  recentes.forEach((d) => {
+    const item = document.createElement("li");
 
-      recentes.forEach((d) => {
-        const item = document.createElement("li");
+    item.classList.add("list-group-item");
 
-        item.classList.add("list-group-item");
+    item.textContent = `${d.nome} - R$ ${d.valor.toFixed(2)}`;
 
-        item.textContent = `${d.nome} - R$ ${d.valor.toFixed(2)}`;
+    lista.appendChild(item);
+  });
+}
 
-        lista.appendChild(item);
-      });
-    }
+function abrirModalSaldo() {
+  $("#modalSaldo").modal("show");
+}
 
-    function abrirPopup() {
-      $("#popupSaldo").modal("show");
-    }
+function fecharModalSaldo() {
+  $("#modalSaldo").modal("hide");
+}
 
-    function adicionarSaldo() {
-      const input = document.getElementById("valorSaldo");
+function adicionarSaldo() {
+  const input = document.getElementById("valorSaldo");
+  const valor = parseFloat(input.value);
 
-      const valor = parseFloat(input.value);
+  if (isNaN(valor) || valor <= 0) {
+    alert("Digite um valor válido!");
+    return;
+  }
 
-      if (isNaN(valor) || valor <= 0) {
-        alert("Digite um valor válido!");
+  let saldoAdicionado = parseFloat(localStorage.getItem("saldoAdicionado")) || 0;
 
-        return;
-      }
+  saldoAdicionado += valor;
 
-      let saldoAdicionado =
-        parseFloat(localStorage.getItem("saldoAdicionado")) || 0;
+  localStorage.setItem("saldoAdicionado", saldoAdicionado);
 
-      saldoAdicionado += valor;
+  input.value = "";
 
-      localStorage.setItem("saldoAdicionado", saldoAdicionado);
+  fecharModalSaldo();
 
-      input.value = "";
+  carregarDashboard();
+}
 
-      $("#popupSaldo").modal("hide");
+carregarDashboard();
 
-      carregarDashboard();
-    }
-
-    carregarDashboard();
-
-    setInterval(carregarDashboard, 1000);
-
-    window.addEventListener("storage", carregarDashboard);
+window.addEventListener("storage", carregarDashboard);
