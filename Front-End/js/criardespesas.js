@@ -1,6 +1,12 @@
 function criarDespesa(event) {
     event.preventDefault();
 
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+        window.location.href = "login.html";
+        return;
+    }
+
     const nome = document.getElementById("nome").value;
     const valor = parseFloat(document.getElementById("valor").value);
 
@@ -26,11 +32,7 @@ function criarDespesa(event) {
         hora: `${hora}:${minutos}`
     };
 
-    let despesas = JSON.parse(localStorage.getItem("despesas")) || [];
-
-    despesas.unshift(despesa);
-
-    localStorage.setItem("despesas", JSON.stringify(despesas));
+    addUserDespesa(currentUser, despesa);
 
     document.getElementById("nome").value = "";
     document.getElementById("valor").value = "";

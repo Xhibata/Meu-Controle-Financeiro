@@ -3,11 +3,16 @@ function carregarExtrato() {
     const totalEl = document.getElementById("saldo");
     const saldoAtualEl = document.getElementById("saldoAtual");
 
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+        window.location.href = "login.html";
+        return;
+    }
+
     lista.innerHTML = "";
 
-    const despesas = JSON.parse(localStorage.getItem("despesas")) || [];
-    const saldoAdicionado =
-        parseFloat(localStorage.getItem("saldoAdicionado")) || 0;
+    const despesas = getUserDespesas(currentUser);
+    const saldoAdicionado = getUserSaldo(currentUser);
 
     let total = 0;
 

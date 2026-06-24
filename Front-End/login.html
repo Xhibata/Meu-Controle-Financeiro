@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Cofrinho Digital</title>
+  <link rel="shortcut icon" href="assets/vault.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+</head>
+
+<body>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-10 col-lg-8">
+        <div class="card shadow">
+          <div class="card-body">
+            <h2 class="text-center mb-4">Bem-vindo ao Cofrinho Digital</h2>
+            <p class="text-center text-muted mb-4">Faça login ou cadastre-se para acessar seu saldo, extrato e despesas.</p>
+
+            <div id="authMessage" class="alert" style="display: none;"></div>
+
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <h4>Entrar</h4>
+                <form id="login-form">
+                  <div class="form-group">
+                    <label for="loginUsername">Usuário</label>
+                    <input id="loginUsername" class="form-control" type="text" placeholder="Seu usuário" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="loginPassword">Senha</label>
+                    <input id="loginPassword" class="form-control" type="password" placeholder="Sua senha" required />
+                  </div>
+                  <div class="form-group form-check">
+                    <input id="loginRemember" class="form-check-input" type="checkbox" />
+                    <label class="form-check-label" for="loginRemember">Continuar conectado</label>
+                  </div>
+                  <button class="btn btn-primary btn-block" type="submit">Entrar</button>
+                </form>
+              </div>
+
+              <div class="col-md-6 mb-4">
+                <h4>Cadastrar</h4>
+                <form id="register-form">
+                  <div class="form-group">
+                    <label for="registerUsername">Usuário</label>
+                    <input id="registerUsername" class="form-control" type="text" placeholder="Novo usuário" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="registerPassword">Senha</label>
+                    <input id="registerPassword" class="form-control" type="password" placeholder="Senha" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="registerConfirmPassword">Confirme a senha</label>
+                    <input id="registerConfirmPassword" class="form-control" type="password" placeholder="Repita a senha" required />
+                  </div>
+                  <div class="form-group form-check">
+                    <input id="registerRemember" class="form-check-input" type="checkbox" />
+                    <label class="form-check-label" for="registerRemember">Continuar conectado</label>
+                  </div>
+                  <button class="btn btn-success btn-block" type="submit">Cadastrar</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+
+</html>
