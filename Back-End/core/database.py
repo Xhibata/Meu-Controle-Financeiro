@@ -1,20 +1,26 @@
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./financeiro.db"
-
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False},
+DATABASE_URL = (
+    "postgresql://postgres:1234@localhost:5432/estudante"
 )
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+motor = create_engine(
+    DATABASE_URL,
+    pool_pre_ping=True
+)
+
+SessaoLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=motor
+)
+
 Base = declarative_base()
 
-
 def get_banco():
-    db = SessionLocal()
+    banco = SessaoLocal()
     try:
-        yield db
+        yield banco
     finally:
-        db.close()
+        banco.close()
