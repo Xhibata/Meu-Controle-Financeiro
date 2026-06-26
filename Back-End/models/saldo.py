@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer
+﻿from sqlalchemy import Column, Integer
 
-from app.database import Base
+from core.database import Base
 
 
 class Saldo(Base):

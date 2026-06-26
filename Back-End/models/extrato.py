@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, String, Date, func
+﻿from sqlalchemy import Column, Integer, String, Date, func
 
-from app.database import Base
+from core.database import Base
 
 
 class Extrato(Base):

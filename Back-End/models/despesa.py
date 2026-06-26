@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, String, Date
+﻿from sqlalchemy import Column, Integer, String, Date
 
-from app.database import Base
+from core.database import Base
 
 
 class Despesa(Base):
