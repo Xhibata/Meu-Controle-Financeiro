@@ -2,8 +2,14 @@ function carregarDashboard() {
   const saldoEl = document.getElementById("saldo");
   const lista = document.getElementById("recentes");
 
-  const despesas = JSON.parse(localStorage.getItem("despesas")) || [];
-  const saldoAdicionado = parseFloat(localStorage.getItem("saldoAdicionado")) || 0;
+  const currentUser = getCurrentUser();
+  if (!currentUser) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const despesas = getUserDespesas(currentUser);
+  const saldoAdicionado = getUserSaldo(currentUser);
 
   lista.innerHTML = "";
 
@@ -47,11 +53,17 @@ function adicionarSaldo() {
     return;
   }
 
-  let saldoAdicionado = parseFloat(localStorage.getItem("saldoAdicionado")) || 0;
+  const currentUser = getCurrentUser();
+  if (!currentUser) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  let saldoAdicionado = getUserSaldo(currentUser);
 
   saldoAdicionado += valor;
 
-  localStorage.setItem("saldoAdicionado", saldoAdicionado);
+  setUserSaldo(currentUser, saldoAdicionado);
 
   input.value = "";
 
