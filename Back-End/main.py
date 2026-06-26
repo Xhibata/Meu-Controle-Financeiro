@@ -1,6 +1,6 @@
 ﻿from fastapi import FastAPI
 
-from core.database import Base, engine
+from core.database import Base, motor
 from models.despesa import Despesa
 from models.extrato import Extrato
 from models.saldo import Saldo
@@ -22,7 +22,7 @@ app.include_router(despesas_router)
 app.include_router(extrato_router)
 app.include_router(saldo_router)
 
-Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=motor)
 
 @app.get("/")
 def home():
