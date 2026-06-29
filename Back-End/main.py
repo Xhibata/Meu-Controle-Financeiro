@@ -10,6 +10,7 @@ from rotas.saude import roteador as saude_router
 from rotas.despesas import roteador as despesas_router
 from rotas.extrato import roteador as extrato_router
 from rotas.saldo import roteador as saldo_router
+from rotas.usuario import roteador as usuario_router
 
 app = FastAPI(
     title="API Financeiro",
@@ -21,6 +22,7 @@ app.include_router(saude_router)
 app.include_router(despesas_router)
 app.include_router(extrato_router)
 app.include_router(saldo_router)
+app.include_router(usuario_router)
 
 Base.metadata.create_all(bind=motor)
 
