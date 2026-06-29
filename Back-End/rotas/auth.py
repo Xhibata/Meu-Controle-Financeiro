@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from sqlalchemy.orm import Session
 
 from core.auth import criar_token, hash_senha
 from core.database import get_banco
+from schemas.login_schema import LoginRequest
 from models.usuario import Usuario
 
 roteador = APIRouter(
@@ -12,14 +13,9 @@ roteador = APIRouter(
 )
 
 
-class LoginRequest(BaseModel):
-    email: str
-    senha: str
-
-
 class RegistroRequest(BaseModel):
     nome: str
-    email: str
+    email: EmailStr
     senha: str
 
 
