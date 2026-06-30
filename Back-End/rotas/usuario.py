@@ -46,4 +46,3 @@ def listar_usuario_unico(usuario_id: int, db: Session = Depends(get_banco)):
 
     return service.buscar_usuarios(usuario_id)
 
-

@@ -3,7 +3,7 @@ from typing import Self
 from fastapi import HTTPException, status
 from models.usuario import Usuario
 from repo.repositories_usuarios import UsuarioRepository
-from core.auth import hash_senha,verificar_hash
+from core.auth import gerar_hash,verificar_senha
 from core.auth import criar_token
 from models.usuario import Usuario
 
@@ -12,7 +12,6 @@ class UsuarioSelfService:
         self.repository = repository
         
     def criar_usuario(self, dados):
-        print(dados)
         usuario_existe = self.repository.get_by_email(
             dados.email
         )
@@ -22,10 +21,9 @@ class UsuarioSelfService:
                 detail="Usuário já cadastrado"
             )
         
-        senha_hash = hash_senha(dados.senha)
+        senha_hash = gerar_hash(dados.senha)
         
         usuario = Usuario(
-            nome=dados.nome,
             email=dados.email,
             senha=senha_hash
         ) 
@@ -35,6 +33,7 @@ class UsuarioSelfService:
             "objeto": {
                 "id": usuario.id,
                 "email": usuario.email,
+                "senha": usuario.senha
             }
         }
     
@@ -61,6 +60,7 @@ class UsuarioSelfService:
             "objeto": {
                 "id": usuario.id,
                 "email": usuario.email,
+                "senha": usuario.senha
             }
         }
         
@@ -71,7 +71,7 @@ class UsuarioSelfService:
                 status_code=401,
                 detail="Credenciais inválidas",
             )
-        senha_valida = verificar_hash(senha, usuario.senha)
+        senha_valida = verificar_senha(senha, usuario.senha)
         if not senha_valida:
             raise HTTPException(
                 status_code=401,
