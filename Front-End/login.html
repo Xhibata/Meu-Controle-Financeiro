@@ -71,6 +71,7 @@ document.getElementById("login-form").addEventListener("submit", async function 
         if (!resposta.ok) {
             throw new Error(dados.detail || "Email ou senha inválidos.");
         }
+        
 
         // Salva o token
         localStorage.setItem("access_token", dados.access_token);
@@ -79,11 +80,10 @@ document.getElementById("login-form").addEventListener("submit", async function 
         // Se quiser salvar o email também
         localStorage.setItem("usuario_email", email);
 
-        alert("Login realizado com sucesso!");
+ 
 
         // Redireciona para a página principal
         window.location.href = "index.html";
-
     } catch (erro) {
         alert(erro.message);
     }
