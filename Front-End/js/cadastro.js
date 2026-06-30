@@ -20,18 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    if (senha.length < 4) {
-      alert('A senha precisa ter pelo menos 4 caracteres.');
+    if (senha.length < 8) {
+      alert('A senha precisa ter pelo menos 8 caracteres.');
       return;
     }
 
     if (senha !== confirmarSenha) {
       alert('As senhas não coincidem.');
-      return;
-    }
-
-    if (!termos) {
-      alert('Você precisa aceitar os termos para continuar.');
       return;
     }
 

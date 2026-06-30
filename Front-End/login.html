@@ -27,8 +27,8 @@
                 <h4>Entrar</h4>
                 <form id="login-form">
                   <div class="form-group">
-                    <label for="loginUsername">Usuário</label>
-                    <input id="loginUsername" class="form-control" type="text" placeholder="Seu usuário" required />
+                    <label for="loginUsername">Email</label>
+                    <input id="loginUsername" class="form-control" type="text" placeholder="exemplo@email.com" required />
                   </div>
                   <div class="form-group">
                     <label for="loginPassword">Senha</label>
@@ -41,37 +41,55 @@
                   <button class="btn btn-primary btn-block" type="submit">Entrar</button>
                 </form>
               </div>
-
-              <div class="col-md-6 mb-4">
-                <h4>Cadastrar</h4>
-                <form id="register-form">
-                  <div class="form-group">
-                    <label for="registerUsername">Usuário</label>
-                    <input id="registerUsername" class="form-control" type="text" placeholder="Novo usuário" required />
-                  </div>
-                  <div class="form-group">
-                    <label for="registerPassword">Senha</label>
-                    <input id="registerPassword" class="form-control" type="password" placeholder="Senha" required />
-                  </div>
-                  <div class="form-group">
-                    <label for="registerConfirmPassword">Confirme a senha</label>
-                    <input id="registerConfirmPassword" class="form-control" type="password" placeholder="Repita a senha" required />
-                  </div>
-                  <div class="form-group form-check">
-                    <input id="registerRemember" class="form-check-input" type="checkbox" />
-                    <label class="form-check-label" for="registerRemember">Continuar conectado</label>
-                  </div>
-                  <button class="btn btn-success btn-block" type="submit">Cadastrar</button>
-                </form>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <script>
+document.getElementById("login-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-  <script src="js/auth.js"></script>
+    const email = document.getElementById("loginUsername").value;
+    const senha = document.getElementById("loginPassword").value;
+
+    try {
+        const resposta = await fetch("http://localhost:8000/usuarios/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: email,
+                senha: senha
+            })
+        });
+
+        const dados = await resposta.json();
+
+        if (!resposta.ok) {
+            throw new Error(dados.detail || "Email ou senha inválidos.");
+        }
+
+        // Salva o token
+        localStorage.setItem("access_token", dados.access_token);
+        localStorage.setItem("token_type", dados.token_type);
+
+        // Se quiser salvar o email também
+        localStorage.setItem("usuario_email", email);
+
+        alert("Login realizado com sucesso!");
+
+        // Redireciona para a página principal
+        window.location.href = "index.html";
+
+    } catch (erro) {
+        alert(erro.message);
+    }
+});
+</script>
+
 </body>
 
 </html>

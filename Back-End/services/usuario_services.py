@@ -12,6 +12,7 @@ class UsuarioSelfService:
         self.repository = repository
         
     def criar_usuario(self, dados):
+        print(dados)
         usuario_existe = self.repository.get_by_email(
             dados.email
         )
@@ -24,6 +25,7 @@ class UsuarioSelfService:
         senha_hash = hash_senha(dados.senha)
         
         usuario = Usuario(
+            nome=dados.nome,
             email=dados.email,
             senha=senha_hash
         ) 
@@ -33,7 +35,6 @@ class UsuarioSelfService:
             "objeto": {
                 "id": usuario.id,
                 "email": usuario.email,
-                "senha": usuario.senha
             }
         }
     
@@ -60,7 +61,6 @@ class UsuarioSelfService:
             "objeto": {
                 "id": usuario.id,
                 "email": usuario.email,
-                "senha": usuario.senha
             }
         }
         
