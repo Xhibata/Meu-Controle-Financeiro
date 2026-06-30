@@ -14,6 +14,14 @@ SECRET_KEY = "troque-esta-chave-por-uma-mais-segura"
 TOKEN_EXPIRATION_SECONDS = 3600
 
 
+def verificar_hash(senha_digitada: str, hash_gravado: str) -> bool:
+    # Gera o hash da senha digitada para comparação
+    hash_digitado = hashlib.sha256(senha_digitada.encode("utf-8")).hexdigest()
+    
+    # Compara os dois hashes de forma segura contra ataques de tempo
+    return hmac.compare_digest(hash_digitado, hash_gravado)
+
+
 def hash_senha(senha: str) -> str:
     return hashlib.sha256(senha.encode("utf-8")).hexdigest()
 
