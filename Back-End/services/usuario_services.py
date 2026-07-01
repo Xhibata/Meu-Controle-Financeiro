@@ -3,11 +3,11 @@ from typing import Self
 from fastapi import HTTPException, status
 from models.usuario import Usuario
 from repo.repositories_usuarios import UsuarioRepository
-from core.auth import gerar_hash,verificar_senha
-from core.auth import criar_token
+from core.seguranca import gerar_hash,verificar_senha
+from core.jwt import criar_token
 from models.usuario import Usuario
 
-class UsuarioSelfService:
+class UsuarioService:
     def __init__(self, repository: UsuarioRepository):
         self.repository = repository
         
@@ -24,6 +24,7 @@ class UsuarioSelfService:
         senha_hash = gerar_hash(dados.senha)
         
         usuario = Usuario(
+            nome=dados.nome,
             email=dados.email,
             senha=senha_hash
         ) 
@@ -32,8 +33,8 @@ class UsuarioSelfService:
             "Mensagem": "Usuário criado com sucesso",
             "objeto": {
                 "id": usuario.id,
-                "email": usuario.email,
-                "senha": usuario.senha
+                "nome": usuario.nome,
+                "email": usuario.email
             }
         }
     
@@ -59,8 +60,8 @@ class UsuarioSelfService:
             "mensagem": "Usuário encontrado",
             "objeto": {
                 "id": usuario.id,
-                "email": usuario.email,
-                "senha": usuario.senha
+                "nome": usuario.nome,
+                "email": usuario.email
             }
         }
         

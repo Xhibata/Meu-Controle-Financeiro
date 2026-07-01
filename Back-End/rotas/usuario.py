@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from core.database import get_banco
 
 from repo.repositories_usuarios import UsuarioRepository
-from services.usuario_services import UsuarioSelfService
+from services.usuario_services import UsuarioService
 from schemas.login_schema import LoginRequest, CadastroRequest
 
 roteador = APIRouter(
@@ -17,7 +17,7 @@ roteador = APIRouter(
 @roteador.post("", status_code=201)
 def criar_usuario(usuario: CadastroRequest, db: Session = Depends(get_banco)):
     repository = UsuarioRepository(db)
-    service = UsuarioSelfService(repository)
+    service = UsuarioService(repository)
 
     return service.criar_usuario(usuario)
 
@@ -25,7 +25,7 @@ def criar_usuario(usuario: CadastroRequest, db: Session = Depends(get_banco)):
 @roteador.post("/login")
 def login(dados: LoginRequest, db: Session = Depends(get_banco)):
     repositorio = UsuarioRepository(db)
-    service = UsuarioSelfService(repositorio)
+    service = UsuarioService(repositorio)
 
     return service.autenticar_usuario(dados.email, dados.senha)
 
@@ -34,7 +34,7 @@ def login(dados: LoginRequest, db: Session = Depends(get_banco)):
 @roteador.get("")
 def listar_usuarios(db: Session = Depends(get_banco)):
     repository = UsuarioRepository(db)
-    service = UsuarioSelfService(repository)
+    service = UsuarioService(repository)
 
     return service.listar_usuarios()
 
@@ -42,7 +42,7 @@ def listar_usuarios(db: Session = Depends(get_banco)):
 @roteador.get("/{usuario_id}")
 def listar_usuario_unico(usuario_id: int, db: Session = Depends(get_banco)):
     repository = UsuarioRepository(db)
-    service = UsuarioSelfService(repository)
+    service = UsuarioService(repository)
 
     return service.buscar_usuarios(usuario_id)
 
