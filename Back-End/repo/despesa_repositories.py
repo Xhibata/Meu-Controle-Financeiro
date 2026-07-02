@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
-from models.despesa import Despesa, Extrato
+from models import Despesa, Extrato
 
 
 class DespesaRepository:
