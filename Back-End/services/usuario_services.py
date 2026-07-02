@@ -1,70 +1,46 @@
-from typing import Self
-
-from fastapi import HTTPException, status
+from fastapi import HTTPException
 from models.usuario import Usuario
 from repo.repositories_usuarios import UsuarioRepository
-from core.seguranca import gerar_hash,verificar_senha
+from core.seguranca import gerar_hash, verificar_senha
 from core.jwt import criar_token
-from models.usuario import Usuario
+
 
 class UsuarioService:
     def __init__(self, repository: UsuarioRepository):
         self.repository = repository
-        
+
     def criar_usuario(self, dados):
-        usuario_existe = self.repository.get_by_email(
-            dados.email
-        )
+        usuario_existe = self.repository.get_by_email(dados.email)
         if usuario_existe:
-            raise HTTPException(
-                status_code=400,
-                detail="Usuário já cadastrado"
-            )
-        
+            raise HTTPException(status_code=400, detail="Usuário já cadastrado")
+
         senha_hash = gerar_hash(dados.senha)
-        
-        usuario = Usuario(
-            nome=dados.nome,
-            email=dados.email,
-            senha=senha_hash
-        ) 
+
+        usuario = Usuario(nome=dados.nome, email=dados.email, senha=senha_hash)
         usuario = self.repository.create(usuario)
         return {
             "Mensagem": "Usuário criado com sucesso",
-            "objeto": {
-                "id": usuario.id,
-                "nome": usuario.nome,
-                "email": usuario.email
-            }
+            "objeto": {"id": usuario.id, "nome": usuario.nome, "email": usuario.email},
         }
-    
+
     def listar_usuarios(self):
         lista = self.repository.get_all()
         return {
             "mensagem": "usuarios encontrados",
             "total": len(lista),
-            "objetos": lista
+            "objetos": lista,
         }
-        
+
     def buscar_usuario(self, usuario_id: int):
-        usuario = self.repository.get_by_id(
-            usuario_id
-        )
-        
+        usuario = self.repository.get_by_id(usuario_id)
+
         if not usuario:
-            raise HTTPException(
-                status_code=404,
-                detail="Usuário não encontrado"
-            )
+            raise HTTPException(status_code=404, detail="Usuário não encontrado")
         return {
             "mensagem": "Usuário encontrado",
-            "objeto": {
-                "id": usuario.id,
-                "nome": usuario.nome,
-                "email": usuario.email
-            }
+            "objeto": {"id": usuario.id, "nome": usuario.nome, "email": usuario.email},
         }
-        
+
     def autenticar_usuario(self, email: str, senha: str):
         usuario = self.repository.get_by_email(email)
         if not usuario:

@@ -5,29 +5,11 @@ from core.database import get_banco
 
 from repo.repositories_usuarios import UsuarioRepository
 from services.usuario_services import UsuarioService
-from schemas.login_schema import LoginRequest, CadastroRequest
 
 roteador = APIRouter(
     prefix="/usuarios",
     tags=["Usuários"],
 )
-
-
-# POST - Criar usuário
-@roteador.post("", status_code=201)
-def criar_usuario(usuario: CadastroRequest, db: Session = Depends(get_banco)):
-    repository = UsuarioRepository(db)
-    service = UsuarioService(repository)
-
-    return service.criar_usuario(usuario)
-
-
-@roteador.post("/login")
-def login(dados: LoginRequest, db: Session = Depends(get_banco)):
-    repositorio = UsuarioRepository(db)
-    service = UsuarioService(repositorio)
-
-    return service.autenticar_usuario(dados.email, dados.senha)
 
 
 # GET - Listar usuários
@@ -44,5 +26,4 @@ def listar_usuario_unico(usuario_id: int, db: Session = Depends(get_banco)):
     repository = UsuarioRepository(db)
     service = UsuarioService(repository)
 
-    return service.buscar_usuarios(usuario_id)
-
+    return service.buscar_usuario(usuario_id)
