@@ -1,4 +1,5 @@
 ﻿from sqlalchemy import Column, Integer, String, Date, func, ForeignKey
+from sqlalchemy.orm import relationship
 
 from core.database import Base
 
@@ -8,9 +9,11 @@ class Extrato(Base):
 
     id = Column(Integer, primary_key=True)
 
-    usuario_id = Column(Integer, ForeignKey("usuario.id"), nullable=False)
+    usuario_id = Column(Integer, ForeignKey("usuario.id"))
 
     descricao = Column(String(255))
+
+    usuario = relationship("Usuario", back_populates="extratos")
 
     valor = Column(Integer)
 
