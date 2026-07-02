@@ -12,7 +12,7 @@ from schemas import (
     TokenResponse,
 )
 
-roteador = APIRouter(prefix="/auth", tags=["auth"])
+roteador = APIRouter(prefix="/auth", tags=["Autenticação"])
 
 
 @roteador.post("/login", response_model=TokenResponse)

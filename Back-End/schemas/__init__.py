@@ -12,6 +12,8 @@ from .extrato_schema import (
 )
 
 from .auth_schema import TokenResponse
+from .dashboard_schema import DashboardResponse
+from .dashboard_extrato_schema import DashboardExtratoResponse
 
 __all__ = [
     "LoginRequest",
@@ -24,4 +26,6 @@ __all__ = [
     "ExtratoUpdate",
     "ExtratoResponse",
     "TokenResponse",
+    "DashboardResponse",
+    "DashboardExtratoResponse",
 ]

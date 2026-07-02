@@ -6,10 +6,7 @@ from core.auth import obter_usuario_logado
 from core.database import get_banco
 from models.saldo import Saldo
 
-roteador = APIRouter(
-    prefix="/saldo",
-    tags=["saldo"]
-)
+roteador = APIRouter(prefix="/saldo", tags=["Saldo"])
 
 
 class SaldoUpdate(BaseModel):
@@ -17,7 +14,11 @@ class SaldoUpdate(BaseModel):
 
 
 @roteador.post("", status_code=201)
-def criar_saldo(dados: SaldoUpdate, db: Session = Depends(get_banco), usuario=Depends(obter_usuario_logado)):
+def criar_saldo(
+    dados: SaldoUpdate,
+    db: Session = Depends(get_banco),
+    usuario=Depends(obter_usuario_logado),
+):
     saldo = Saldo(valor=dados.valor)
     db.add(saldo)
     db.commit()
@@ -26,12 +27,19 @@ def criar_saldo(dados: SaldoUpdate, db: Session = Depends(get_banco), usuario=De
 
 
 @roteador.get("")
-def listar_saldo(db: Session = Depends(get_banco), usuario=Depends(obter_usuario_logado)):
+def listar_saldo(
+    db: Session = Depends(get_banco), usuario=Depends(obter_usuario_logado)
+):
     return db.query(Saldo).all()
 
 
 @roteador.put("/{saldo_id}")
-def atualizar_saldo(saldo_id: int, dados: SaldoUpdate, db: Session = Depends(get_banco), usuario=Depends(obter_usuario_logado)):
+def atualizar_saldo(
+    saldo_id: int,
+    dados: SaldoUpdate,
+    db: Session = Depends(get_banco),
+    usuario=Depends(obter_usuario_logado),
+):
     saldo = db.query(Saldo).filter(Saldo.id == saldo_id).first()
     if not saldo:
         raise HTTPException(status_code=404, detail="Saldo não encontrado")
@@ -42,7 +50,11 @@ def atualizar_saldo(saldo_id: int, dados: SaldoUpdate, db: Session = Depends(get
 
 
 @roteador.delete("/{saldo_id}", status_code=204)
-def remover_saldo(saldo_id: int, db: Session = Depends(get_banco), usuario=Depends(obter_usuario_logado)):
+def remover_saldo(
+    saldo_id: int,
+    db: Session = Depends(get_banco),
+    usuario=Depends(obter_usuario_logado),
+):
     saldo = db.query(Saldo).filter(Saldo.id == saldo_id).first()
     if not saldo:
         raise HTTPException(status_code=404, detail="Saldo não encontrado")

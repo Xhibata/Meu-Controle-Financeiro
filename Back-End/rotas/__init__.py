@@ -4,6 +4,7 @@ from .despesas import roteador as despesas_router
 from .extrato import roteador as extrato_router
 from .saldo import roteador as saldo_router
 from .saude import roteador as saude_router
+from .dashboard import roteador as dashboard_router
 
 __all__ = [
     "auth_router",
@@ -12,4 +13,5 @@ __all__ = [
     "extrato_router",
     "saldo_router",
     "saude_router",
+    "dashboard_router",
 ]
