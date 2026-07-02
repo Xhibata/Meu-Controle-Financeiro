@@ -20,4 +20,3 @@ def criar_token(dados: dict):
         CHAVE_SECRETA,
         algorithm=ALGORITMO,
     )
-

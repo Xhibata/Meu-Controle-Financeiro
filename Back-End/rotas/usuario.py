@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from core.database import get_banco
 
-from repo.repositories_usuarios import UsuarioRepository
+from repo.usuario_repositories import UsuarioRepository
 from services.usuario_services import UsuarioService
 
 from schemas import UsuarioResponse

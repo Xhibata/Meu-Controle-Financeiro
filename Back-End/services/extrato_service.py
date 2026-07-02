@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from models.extrato import Extrato
-from repo.repositories_extrato import ExtratoRepository
+from repo.extrato_repositories import ExtratoRepository
 
 from schemas import ExtratoCreate
 

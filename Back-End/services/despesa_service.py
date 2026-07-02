@@ -1,8 +1,8 @@
 from fastapi import HTTPException
-from models.despesa import Despesa
-from repo.repositories_despesa import DespesaRepository
 
-from schemas.despesa_schema import DespesaCreate
+from models import Despesa
+from repo import DespesaRepository
+from schemas import DespesaCreate, DespesaUpdate
 
 
 class DespesaService:
@@ -14,39 +14,64 @@ class DespesaService:
         dados: DespesaCreate,
         usuario_id: int,
     ):
-        despesa = Despesa(
-            usuario_id=dados.usuario_id, descricao=dados.descricao, valor=dados.valor
-        )
-        despesa = self.repository.create(despesa)
-        return {
-            "Mensagem": "Despesa criada com sucesso",
-            "objeto": {
-                "id": despesa.id,
-                "usuario_id": despesa.usuario_id,
-                "descricao": despesa.descricao,
-                "valor": despesa.valor,
-            },
-        }
 
-    def listar_despesas(self):
-        lista = self.repository.get_all()
-        return {
-            "mensagem": "despesas encontradas",
-            "total": len(lista),
-            "objetos": lista,
-        }
+        despesa = Despesa(
+            usuario_id=usuario_id,
+            descricao=dados.descricao,
+            valor=dados.valor,
+            data=dados.data,
+        )
+
+        return self.repository.create(despesa)
+
+    def listar_despesas(self, usuario_id: int):
+
+        return self.repository.get_by_usuario(usuario_id)
 
     def buscar_despesa(self, despesa_id: int):
+
         despesa = self.repository.get_by_id(despesa_id)
 
         if not despesa:
-            raise HTTPException(status_code=404, detail="Despesa não encontrada")
-        return {
-            "mensagem": "Despesa encontrada",
-            "objeto": {
-                "id": despesa.id,
-                "usuario_id": despesa.usuario_id,
-                "descricao": despesa.descricao,
-                "valor": despesa.valor,
-            },
-        }
+            raise HTTPException(
+                status_code=404,
+                detail="Despesa não encontrada",
+            )
+
+        return despesa
+
+    def editar_despesa(
+        self,
+        despesa_id: int,
+        dados: DespesaUpdate,
+    ):
+
+        despesa = self.repository.get_by_id(despesa_id)
+
+        if not despesa:
+            raise HTTPException(
+                status_code=404,
+                detail="Despesa não encontrada",
+            )
+
+        despesa.descricao = dados.descricao
+        despesa.valor = dados.valor
+        despesa.data = dados.data
+
+        self.repository.update()
+
+        return despesa
+
+    def remover_despesa(self, despesa_id: int):
+
+        despesa = self.repository.get_by_id(despesa_id)
+
+        if not despesa:
+            raise HTTPException(
+                status_code=404,
+                detail="Despesa não encontrada",
+            )
+
+        self.repository.delete(despesa)
+
+        return {"message": "Despesa removida com sucesso"}

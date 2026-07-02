@@ -1,6 +1,6 @@
-from .repositories_usuarios import UsuarioRepository
-from .repositories_despesa import DespesaRepository
-from .repositories_extrato import ExtratoRepository
+from .usuario_repositories import UsuarioRepository
+from .despesa_repositories import DespesaRepository
+from .extrato_repositories import ExtratoRepository
 
 __all__ = [
     "UsuarioRepository",

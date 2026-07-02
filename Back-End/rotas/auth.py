@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from repo.repositories_usuarios import UsuarioRepository
+from repo.usuario_repositories import UsuarioRepository
 from services.usuario_services import UsuarioService
 
 from core.database import get_banco
