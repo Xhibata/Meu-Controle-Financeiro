@@ -9,6 +9,7 @@ from rotas import (
     extrato_router,
     saldo_router,
     saude_router,
+    dashboard_router,
 )
 
 app = FastAPI(title="API Financeiro", version="1.0.0")
@@ -23,10 +24,11 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(saude_router)
-app.include_router(despesas_router)
-app.include_router(extrato_router)
 app.include_router(saldo_router)
+app.include_router(extrato_router)
 app.include_router(usuario_router)
+app.include_router(despesas_router)
+app.include_router(dashboard_router)
 
 Base.metadata.create_all(bind=motor)
 
