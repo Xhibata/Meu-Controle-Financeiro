@@ -19,6 +19,7 @@ class ExtratoUpdate(BaseModel):
 
 class ExtratoResponse(BaseModel):
     id: int
+    usuario_id: int
     descricao: str
     valor: int
     tipo: str

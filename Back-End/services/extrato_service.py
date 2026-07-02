@@ -1,37 +1,84 @@
 from fastapi import HTTPException
-from models.extrato import Extrato
-from repo.extrato_repositories import ExtratoRepository
 
-from schemas import ExtratoCreate
+from models import Extrato
+from repo import ExtratoRepository
+from schemas import ExtratoCreate, ExtratoUpdate
 
 
 class ExtratoService:
-    def __init__(
+    def __init__(self, repository: ExtratoRepository):
+        self.repository = repository
+
+    def criar_extrato(
         self,
-        repositories: ExtratoRepository,
+        dados: ExtratoCreate,
         usuario_id: int,
     ):
-        self.repository = repositories
 
-    def create(self, extrato: ExtratoCreate) -> Extrato:
-        return self.repository.add(extrato)
+        extrato = Extrato(
+            usuario_id=usuario_id,
+            descricao=dados.descricao,
+            valor=dados.valor,
+            tipo=dados.tipo,
+        )
 
-    def get_all(self) -> list[Extrato]:
-        return self.repository.list_all()
+        return self.repository.create(extrato)
 
-    def get_by_id(self, extrato_id: int) -> Extrato:
-        extrato = self.repository.find_by_id(extrato_id)
+    def listar_extratos(
+        self,
+        usuario_id: int,
+    ):
+        return self.repository.get_by_usuario(usuario_id)
+
+    def buscar_extrato(
+        self,
+        extrato_id: int,
+    ):
+
+        extrato = self.repository.get_by_id(extrato_id)
+
         if not extrato:
-            raise HTTPException(status_code=404, detail="Extrato não encontrado")
+            raise HTTPException(
+                status_code=404,
+                detail="Extrato não encontrado",
+            )
+
         return extrato
 
-    def update(self, extrato_id: int, extrato_data: Extrato) -> Extrato:
-        existing = self.repository.find_by_id(extrato_id)
-        if not existing:
-            raise HTTPException(status_code=404, detail="Extrato não encontrado")
-        return self.repository.update(extrato_id, extrato_data)
+    def editar_extrato(
+        self,
+        extrato_id: int,
+        dados: ExtratoUpdate,
+    ):
 
-    def delete(self, extrato_id: int) -> None:
-        if not self.repository.find_by_id(extrato_id):
-            raise HTTPException(status_code=404, detail="Extrato não encontrado")
-        self.repository.delete(extrato_id)
+        extrato = self.repository.get_by_id(extrato_id)
+
+        if not extrato:
+            raise HTTPException(
+                status_code=404,
+                detail="Extrato não encontrado",
+            )
+
+        extrato.descricao = dados.descricao
+        extrato.valor = dados.valor
+        extrato.tipo = dados.tipo
+
+        self.repository.update()
+
+        return extrato
+
+    def remover_extrato(
+        self,
+        extrato_id: int,
+    ):
+
+        extrato = self.repository.get_by_id(extrato_id)
+
+        if not extrato:
+            raise HTTPException(
+                status_code=404,
+                detail="Extrato não encontrado",
+            )
+
+        self.repository.delete(extrato)
+        return {"Extrato removido com sucesso."}

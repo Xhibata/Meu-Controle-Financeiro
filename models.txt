@@ -1,5 +1,0 @@
--entidades
-
-extrato
-saldo
-despesas
