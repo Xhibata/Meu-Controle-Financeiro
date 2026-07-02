@@ -2,9 +2,19 @@ from fastapi import HTTPException
 from models.extrato import Extrato
 from repo.repositories_extrato import ExtratoRepository
 
-class serviceExtrato:
-    def __init__(self, repositories: ExtratoRepository):
+from schemas import ExtratoCreate
+
+
+class ExtratoService:
+    def __init__(
+        self,
+        repositories: ExtratoRepository,
+        usuario_id: int,
+    ):
         self.repository = repositories
+
+    def create(self, extrato: ExtratoCreate) -> Extrato:
+        return self.repository.add(extrato)
 
     def get_all(self) -> list[Extrato]:
         return self.repository.list_all()
@@ -14,9 +24,6 @@ class serviceExtrato:
         if not extrato:
             raise HTTPException(status_code=404, detail="Extrato não encontrado")
         return extrato
-
-    def create(self, extrato: Extrato) -> Extrato:
-        return self.repository.add(extrato)
 
     def update(self, extrato_id: int, extrato_data: Extrato) -> Extrato:
         existing = self.repository.find_by_id(extrato_id)
@@ -28,5 +35,3 @@ class serviceExtrato:
         if not self.repository.find_by_id(extrato_id):
             raise HTTPException(status_code=404, detail="Extrato não encontrado")
         self.repository.delete(extrato_id)
-        
-    

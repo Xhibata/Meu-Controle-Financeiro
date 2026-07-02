@@ -5,12 +5,17 @@ from repo.repositories_usuarios import UsuarioRepository
 from services.usuario_services import UsuarioService
 
 from core.database import get_banco
-from schemas.login_schema import LoginRequest, CadastroRequest
+from schemas import (
+    LoginRequest,
+    UsuarioCreate,
+    UsuarioResponse,
+    TokenResponse,
+)
 
 roteador = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@roteador.post("/login")
+@roteador.post("/login", response_model=TokenResponse)
 def login(dados: LoginRequest, db: Session = Depends(get_banco)):
     repository = UsuarioRepository(db)
     service = UsuarioService(repository)
@@ -18,8 +23,8 @@ def login(dados: LoginRequest, db: Session = Depends(get_banco)):
     return service.autenticar_usuario(dados.email, dados.senha)
 
 
-@roteador.post("/registro", status_code=201)
-def registro(dados: CadastroRequest, db: Session = Depends(get_banco)):
+@roteador.post("/registro", status_code=201, response_model=UsuarioResponse)
+def registro(dados: UsuarioCreate, db: Session = Depends(get_banco)):
     repository = UsuarioRepository(db)
     service = UsuarioService(repository)
 
