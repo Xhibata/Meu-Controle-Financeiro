@@ -7,7 +7,6 @@ from rotas import (
     usuario_router,
     despesas_router,
     extrato_router,
-    saldo_router,
     saude_router,
     dashboard_router,
 )
@@ -24,7 +23,6 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(saude_router)
-app.include_router(saldo_router)
 app.include_router(extrato_router)
 app.include_router(usuario_router)
 app.include_router(despesas_router)

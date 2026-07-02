@@ -1,5 +1,7 @@
 from sqlalchemy.orm import Session
-from models.despesa import Despesa
+from sqlalchemy import func
+
+from models.despesa import Despesa, Extrato
 
 
 class DespesaRepository:
@@ -27,3 +29,19 @@ class DespesaRepository:
     def delete(self, despesa):
         self.db.delete(despesa)
         self.db.commit()
+
+    def calcular_saldo(self, usuario_id: int) -> int:
+
+        total_receitas = (
+            self.db.query(func.coalesce(func.sum(Extrato.valor), 0))
+            .filter(Extrato.usuario_id == usuario_id)
+            .scalar()
+        )
+
+        total_despesas = (
+            self.db.query(func.coalesce(func.sum(Despesa.valor), 0))
+            .filter(Despesa.usuario_id == usuario_id)
+            .scalar()
+        )
+
+        return total_receitas - total_despesas

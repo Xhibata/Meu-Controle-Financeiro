@@ -1,6 +1,4 @@
 from fastapi import HTTPException
-
-from models import Despesa
 from repo import DespesaRepository
 from schemas import DespesaCreate, DespesaUpdate
 
@@ -14,6 +12,19 @@ class DespesaService:
         dados: DespesaCreate,
         usuario_id: int,
     ):
+
+        saldo = self.repository.calcular_saldo(usuario_id)
+
+        if dados.valor > saldo:
+            raise HTTPException(
+                status_code=400,
+                detail={
+                    "mensagem": "Saldo insuficiente.",
+                    "saldo_disponivel": saldo,
+                    "valor_despesa": dados.valor,
+                    "faltam": dados.valor - saldo,
+                },
+            )
 
         despesa = Despesa(
             usuario_id=usuario_id,
