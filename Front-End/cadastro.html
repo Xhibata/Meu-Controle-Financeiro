@@ -84,7 +84,7 @@
       };
 
       try {
-        const resposta = await fetch('http://localhost:8000/usuarios', {
+        const resposta = await fetch('http://localhost:8000/auth/registro', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -92,12 +92,14 @@
           body: JSON.stringify(dadosUsuario)
         });
 
-        console.log(dadosUsuario)
+
+        console.log(resposta)
         // 1. CORREÇÃO DO ERRO DE DIGITAÇÃO: Mudou de reply.json() para resposta.json()
         const resultado = await resposta.json();
+        console.log(resultado)
 
-        if (resposta.ok) {
-          alert(`${resultado.Mensagem}! ID do usuário: ${resultado.objeto.id}`);
+        if (resposta.status == 201) {
+          alert(`Usuário cadastrado com sucesso! ID do usuário: ${resultado.id}`);
           window.location.href = 'login.html';
         } else {
           // 2. AJUDA A IDENTIFICAR O ERRO 400: Mostra o que o backend rejeitou
