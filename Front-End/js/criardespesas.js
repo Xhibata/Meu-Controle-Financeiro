@@ -1,9 +1,11 @@
-function criarDespesa(event) {
+async function criarDespesa(event) {
     event.preventDefault();
 
-    const currentUser = getCurrentUser();
-    if (!currentUser) {
-        window.location.href = "login.html";
+    const token = localStorage.getItem('access_token');
+    const base = 'http://localhost:8000';
+
+    if (!token) {
+        window.location.href = 'login.html';
         return;
     }
 
@@ -15,29 +17,38 @@ function criarDespesa(event) {
         return;
     }
 
-    const agora = new Date();
-
-    const dia = String(agora.getDate()).padStart(2, "0");
-    const mes = String(agora.getMonth() + 1).padStart(2, "0");
-    const ano = String(agora.getFullYear()).slice(-2);
-
-    const hora = String(agora.getHours()).padStart(2, "0");
-    const minutos = String(agora.getMinutes()).padStart(2, "0");
-
-    const despesa = {
-        id: Date.now(),
-        nome: nome,
-        valor: valor,
-        data: `${dia}/${mes}/${ano}`,
-        hora: `${hora}:${minutos}`
+    // Monta o objeto no formato esperado pela API do seu backend
+    const novaDespesa = {
+        descricao: nome, // Geralmente o backend espera 'descricao' ou 'nome'
+        valor: valor
     };
 
-    addUserDespesa(currentUser, despesa);
+    try {
+        // Faz a requisição POST para salvar no banco de dados através do backend
+        const resposta = await fetch(`${base}/despesas`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(novaDespesa)
+        });
 
-    document.getElementById("nome").value = "";
-    document.getElementById("valor").value = "";
+        if (!resposta.ok) {
+            throw new Error('Erro ao salvar despesa no servidor');
+        }
 
-    abrirPopup();
+        // Limpa os campos após o sucesso
+        document.getElementById("nome").value = "";
+        document.getElementById("valor").value = "";
+
+        // Abre o popup visual de confirmação existente na sua tela
+        abrirPopup();
+
+    } catch (erro) {
+        console.error('Erro ao criar despesa:', erro);
+        alert('Não foi possível salvar a despesa no servidor.');
+    }
 }
 
 function abrirPopup() {
@@ -46,8 +57,9 @@ function abrirPopup() {
 
 function fecharPopup() {
     document.getElementById("popup").style.display = "none";
+    window.location.href = "index.html";
 }
 
 function irParaExtrato() {
-    window.location.href = "extrato.html";
+    window.location.href = "index.html";
 }

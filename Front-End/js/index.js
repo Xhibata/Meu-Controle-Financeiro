@@ -32,17 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('qtdDespesas').innerText =
         data.quantidade_despesas;
 
-      const email = localStorage.getItem('usuario_email');
-
-      let saldoLocal = localStorage.getItem(`saldo_${email}`);
-
-      if (saldoLocal === null) {
-        saldoLocal = data.saldo;
-        localStorage.setItem(`saldo_${email}`, saldoLocal);
-      }
-
+      // Injeta diretamente o saldo dinâmico vindo da API backend
       document.getElementById('saldo').innerText =
-        formatCurrency(parseFloat(saldoLocal));
+        formatCurrency(data.saldo);
     })
     .catch((err) => {
       console.error('Erro ao carregar dashboard:', err);
@@ -120,43 +112,5 @@ function escapeHtml(str) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
-
-function abrirModalSaldo() {
-  $('#modalSaldo').modal('show');
-}
-
-function adicionarSaldo() {
-    const valor = parseFloat(
-        document.getElementById('valorSaldo').value
-    );
-
-    if (!valor || valor <= 0) {
-        alert('Digite um valor válido');
-        return;
-    }
-
-    const email = localStorage.getItem('usuario_email');
-
-    const chave = `saldo_${email}`;
-
-    let saldo = parseFloat(localStorage.getItem(chave));
-
-    if (isNaN(saldo)) {
-        saldo = 0;
-    }
-
-    saldo += valor;
-
-    localStorage.setItem(chave, saldo.toString());
-
-    document.getElementById('saldo').innerText =
-        formatCurrency(saldo);
-
-    document.getElementById('valorSaldo').value = '';
-
-    $('#modalSaldo').modal('hide');
-
-    console.log('Saldo salvo:', localStorage.getItem(chave));
+    .replace(/'/g, '&#x27;');
 }
