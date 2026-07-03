@@ -39,6 +39,14 @@ const Auth = {
     return resposta;
   },
 
+  logout() {
+    Utils.remover(STORAGE.TOKEN);
+
+    Utils.remover(STORAGE.USUARIO);
+
+    window.location.replace("login.html");
+  },
+
   /**
    * Salva o JWT.
    */

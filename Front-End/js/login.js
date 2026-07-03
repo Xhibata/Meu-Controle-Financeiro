@@ -1,21 +1,45 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('loginForm');
+/**
+ * ==========================================================
+ * LOGIN.JS
+ * ----------------------------------------------------------
+ * Responsável pela autenticação do usuário.
+ * ==========================================================
+ */
 
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
+document.addEventListener("DOMContentLoaded", inicializarPagina);
 
-    const email = document.getElementById('email').value.trim();
-    const senha = document.getElementById('senha').value.trim();
+function inicializarPagina() {
+  const formulario = document.getElementById("formLogin");
 
-    if (!email || !senha) {
-      alert('Preencha e-mail e senha para continuar.');
-      return;
-    }
+  formulario.addEventListener("submit", realizarLogin);
+}
 
-    if (email.includes('@') && senha.length >= 4) {
-      window.location.href = 'index.html';
-    } else {
-      alert('Por favor, informe um e-mail válido e uma senha com pelo menos 4 caracteres.');
-    }
-  });
-});
+async function realizarLogin(event) {
+  event.preventDefault();
+
+  const email = document.getElementById("email").value.trim();
+
+  const senha = document.getElementById("senha").value.trim();
+
+  if (email === "") {
+    Utils.mostrarErro("Informe o e-mail.");
+    return;
+  }
+
+  if (senha === "") {
+    Utils.mostrarErro("Informe a senha.");
+    return;
+  }
+
+  try {
+    // Realiza o login
+    await Auth.login(email, senha);
+
+    Utils.mostrarMensagem("Login realizado com sucesso!");
+
+    // Redireciona para a página inicial
+    window.location.href = "index.html";
+  } catch (erro) {
+    Utils.mostrarErro(erro.message);
+  }
+}

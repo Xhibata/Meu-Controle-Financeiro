@@ -1,30 +1,40 @@
-(function($) {
+/**
+ * ==========================================================
+ * MAIN.JS
+ * ----------------------------------------------------------
+ * Responsável por proteger as páginas privadas.
+ * ==========================================================
+ */
 
-    "use strict";
+const PAGINAS_PUBLICAS = [
+    "login.html",
+    "cadastro.html"
+];
 
-    var fullHeight = function() {
-        $('.js-fullheight').css('height', $(window).height());
-        $(window).resize(function(){
-            $('.js-fullheight').css('height', $(window).height());
-        });
-    };
-    fullHeight();
+document.addEventListener("DOMContentLoaded", verificarAutenticacao);
 
-    $('#sidebarCollapse').on('click', function () {
-        $('#sidebar').toggleClass('active');
+function verificarAutenticacao() {
 
-        // Overlay escuro atrás da sidebar no mobile (opcional)
-        if ($(window).width() <= 768) {
-            $('body').toggleClass('sidebar-open');
-        }
-    });
+    const paginaAtual = window.location.pathname.split("/").pop();
 
-    // Fecha a sidebar ao clicar em um link no mobile
-    $('.components a').on('click', function() {
-        if ($(window).width() <= 768) {
-            $('#sidebar').removeClass('active');
-            $('body').removeClass('sidebar-open');
-        }
-    });
+    const paginaPublica = PAGINAS_PUBLICAS.includes(paginaAtual);
 
-})(jQuery);
+    const autenticado = Auth.isAuthenticated();
+
+    // Usuário não autenticado tentando acessar página privada
+    if (!autenticado && !paginaPublica) {
+
+        window.location.replace("login.html");
+        return;
+
+    }
+
+    // Usuário autenticado tentando acessar login ou cadastro
+    if (autenticado && paginaPublica) {
+
+        window.location.replace("index.html");
+        return;
+
+    }
+
+}

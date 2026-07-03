@@ -1,11 +1,8 @@
 const STORAGE = {
+  TOKEN: "token",
 
-    TOKEN: "token",
-
-    USUARIO: "usuario"
-
+  USUARIO: "usuario",
 };
-
 
 const Utils = {
   salvar(chave, valor) {
@@ -15,9 +12,7 @@ const Utils = {
   recuperar(chave) {
     const valor = localStorage.getItem(chave);
 
-    if (!valor) {
-      return null;
-    }
+    if (!valor) return null;
 
     return JSON.parse(valor);
   },
@@ -28,5 +23,13 @@ const Utils = {
 
   limpar() {
     localStorage.clear();
+  },
+
+  mostrarMensagem(mensagem) {
+    alert(mensagem);
+  },
+
+  mostrarErro(mensagem) {
+    alert(mensagem);
   },
 };

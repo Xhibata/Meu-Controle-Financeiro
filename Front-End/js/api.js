@@ -12,13 +12,6 @@ const API = {
   BASE_URL: "http://127.0.0.1:8000",
 
   /**
-   * Recupera o token salvo no navegador.
-   */
-  getToken() {
-    return localStorage.getItem("token");
-  },
-
-  /**
    * Monta os cabeçalhos da requisição.
    */
   buildHeaders(hasBody = true) {
@@ -28,7 +21,7 @@ const API = {
       headers["Content-Type"] = "application/json";
     }
 
-    const token = this.getToken();
+    const token = Auth.getToken();
 
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
