@@ -2,6 +2,7 @@ from fastapi import HTTPException
 from repo import DespesaRepository
 from schemas import DespesaCreate, DespesaUpdate
 
+from models import Despesa
 
 class DespesaService:
     def __init__(self, repository: DespesaRepository):

@@ -1,116 +1,210 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const token = localStorage.getItem('access_token');
+const API_BASE = "http://localhost:8000";
 
-  if (!token) {
-    window.location.href = 'login.html';
-    return;
-  }
+function getToken() {
+  return localStorage.getItem("access_token");
+}
 
-  const headers = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
+function getAuthHeaders() {
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${getToken()}`,
   };
-
-  const base = 'http://localhost:8000';
-
-  fetch(`${base}/dashboard`, { headers })
-    .then((r) => r.json())
-    .then((data) => {
-      if (data.detail) {
-        throw new Error(data.detail);
-      }
-
-      document.getElementById('totalReceitas').innerText =
-        formatCurrency(data.total_receitas);
-
-      document.getElementById('totalDespesas').innerText =
-        formatCurrency(data.total_despesas);
-
-      document.getElementById('qtdReceitas').innerText =
-        data.quantidade_receitas;
-
-      document.getElementById('qtdDespesas').innerText =
-        data.quantidade_despesas;
-
-      // Injeta diretamente o saldo dinâmico vindo da API backend
-      document.getElementById('saldo').innerText =
-        formatCurrency(data.saldo);
-    })
-    .catch((err) => {
-      console.error('Erro ao carregar dashboard:', err);
-    });
-
-  fetch(`${base}/dashboard/extrato`, { headers })
-    .then((r) => r.json())
-    .then((lista) => {
-      const ul = document.getElementById('recentes');
-
-      ul.innerHTML = '';
-
-      lista.forEach((item) => {
-        const li = document.createElement('li');
-
-        li.className =
-          'list-group-item d-flex justify-content-between align-items-center';
-
-        li.innerHTML = `
-          <div>
-            <div class="font-weight-bold">
-              ${escapeHtml(item.tipo)} - ${escapeHtml(item.descricao)}
-            </div>
-
-            <small class="text-muted">
-              ${formatDate(item.data)}
-            </small>
-          </div>
-
-          <div class="badge badge-pill badge-secondary">
-            ${formatCurrency(item.valor)}
-          </div>
-        `;
-
-        ul.appendChild(li);
-      });
-    })
-    .catch((err) => {
-      console.error('Erro ao carregar extrato:', err);
-    });
-});
+}
 
 function formatCurrency(value) {
-  const num = Number(value) || 0;
+  const num = (Number(value) || 0) / 100;
 
-  return num.toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
+  return num.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
   });
 }
 
 function formatDate(d) {
-  try {
-    const dt = new Date(d);
+  if (!d) return "Sem data";
 
-    return dt.toLocaleDateString('pt-BR');
+  try {
+    return new Date(d).toLocaleDateString("pt-BR");
   } catch {
     return d;
   }
 }
 
+function setUserName() {
+  const userNameEl = document.getElementById("userName");
+  const email = localStorage.getItem("usuario_email");
+
+  if (userNameEl) {
+    userNameEl.textContent = email ? `Olá, ${email}` : "Olá, usuário";
+  }
+}
+
+function renderTransacoes(lista) {
+  const ul = document.getElementById("recentes");
+  const emptyState = document.getElementById("emptyState");
+
+  if (!ul) return;
+
+  ul.innerHTML = "";
+
+  if (!lista || lista.length === 0) {
+    if (emptyState) {
+      emptyState.classList.remove("d-none");
+    }
+    return;
+  }
+
+  if (emptyState) {
+    emptyState.classList.add("d-none");
+  }
+
+  lista.forEach((item) => {
+    const li = document.createElement("li");
+    li.className = "list-group-item d-flex justify-content-between align-items-center flex-wrap gap-2";
+
+    li.innerHTML = `
+      <div>
+        <div class="font-weight-bold">${item.tipo} - ${item.descricao}</div>
+        <small class="text-muted">${formatDate(item.data)}</small>
+      </div>
+      <div class="badge badge-pill badge-secondary">${formatCurrency(item.valor)}</div>
+    `;
+
+    ul.appendChild(li);
+  });
+}
+
 function logout() {
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('token_type');
-  localStorage.removeItem('usuario_email');
-
-  window.location.href = 'login.html';
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("token_type");
+  localStorage.removeItem("usuario_email");
+  window.location.href = "login.html";
 }
 
-function escapeHtml(str) {
-  if (!str) return '';
+async function adicionarSaldo() {
+  const valorInput = document.getElementById("valorSaldo");
+  const valor = Number(valorInput?.value);
 
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;');
+  if (!valorInput || Number.isNaN(valor) || valor <= 0) {
+    alert("Informe um valor válido para adicionar ao saldo.");
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE}/extrato`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({
+        descricao: "Saldo adicionado",
+        valor: Math.round(valor * 100),
+        tipo: "Receita",
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData?.detail?.mensagem || "Não foi possível adicionar o saldo.");
+    }
+
+    valorInput.value = "";
+    $(["#modalSaldo"]).modal("hide");
+    await carregarDashboard();
+    alert("Saldo adicionado com sucesso!");
+  } catch (error) {
+    console.error(error);
+    alert(error.message || "Não foi possível adicionar o saldo.");
+  }
 }
+
+async function carregarDashboard() {
+  const saldoEl = document.getElementById("saldo");
+  const receitasEl = document.getElementById("totalReceitas");
+  const despesasEl = document.getElementById("totalDespesas");
+  const qtdReceitasEl = document.getElementById("qtdReceitas");
+  const qtdDespesasEl = document.getElementById("qtdDespesas");
+  const recentesEl = document.getElementById("recentes");
+
+  if (recentesEl) {
+    recentesEl.innerHTML = '<li class="list-group-item text-center">Carregando...</li>';
+  }
+
+  try {
+    const dashboardResponse = await fetch(`${API_BASE}/dashboard`, {
+      headers: getAuthHeaders(),
+    });
+
+    if (!dashboardResponse.ok) {
+      if (dashboardResponse.status === 401) {
+        logout();
+        return;
+      }
+      throw new Error("Erro ao carregar o dashboard.");
+    }
+
+    const dashboardData = await dashboardResponse.json();
+
+    if (saldoEl) {
+      saldoEl.textContent = formatCurrency(dashboardData.saldo);
+      saldoEl.className = `display-4 mb-0 ${dashboardData.saldo >= 0 ? "text-success" : "text-danger"}`;
+    }
+
+    if (receitasEl) {
+      receitasEl.textContent = formatCurrency(dashboardData.total_receitas);
+    }
+
+    if (despesasEl) {
+      despesasEl.textContent = formatCurrency(dashboardData.total_despesas);
+    }
+
+    if (qtdReceitasEl) {
+      qtdReceitasEl.textContent = dashboardData.quantidade_receitas;
+    }
+
+    if (qtdDespesasEl) {
+      qtdDespesasEl.textContent = dashboardData.quantidade_despesas;
+    }
+  } catch (error) {
+    console.error(error);
+    if (saldoEl) {
+      saldoEl.textContent = "Não foi possível carregar o saldo";
+    }
+  }
+
+  try {
+    const extratoResponse = await fetch(`${API_BASE}/dashboard/extrato`, {
+      headers: getAuthHeaders(),
+    });
+
+    if (!extratoResponse.ok) {
+      if (extratoResponse.status === 401) {
+        logout();
+        return;
+      }
+      throw new Error("Erro ao carregar o extrato.");
+    }
+
+    const lista = await extratoResponse.json();
+    renderTransacoes(lista);
+  } catch (error) {
+    console.error(error);
+    if (recentesEl) {
+      recentesEl.innerHTML = '<li class="list-group-item text-danger">Não foi possível carregar as transações.</li>';
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const token = getToken();
+
+  if (!token) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  setUserName();
+
+  await carregarDashboard();
+});
+
+window.logout = logout;
+window.adicionarSaldo = adicionarSaldo;

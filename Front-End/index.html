@@ -14,6 +14,36 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
   <link rel="stylesheet" href="css/sidebar.css" />
   <link rel="stylesheet" href="css/popup.css" />
+  <style>
+    #content {
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    main.container {
+      max-width: 1100px;
+      padding: 1rem 1rem 2rem;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-stat {
+      min-height: 120px;
+    }
+
+    @media (max-width: 768px) {
+      main.container {
+        padding: 0.75rem 0.75rem 1.5rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -77,71 +107,71 @@
 
     <div id="content">
       <main role="main" class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="top-bar">
           <div id="userName" class="font-weight-bold"></div>
-          <button class="btn btn-outline-danger btn-sm" onclick="logout()">Sair</button>
+          <div class="d-flex flex-wrap gap-2">
+            <button class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#modalSaldo">
+              Adicionar saldo
+            </button>
+            <button id="logoutButton" class="btn btn-outline-danger btn-sm" type="button">Sair</button>
+          </div>
         </div>
 
-        <div class="row justify-content-center mt-5">
-          <div class="col-12 mb-3">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="text-center">Saldo Atual</h4>
-                <h2 id="saldo" class="text-center">R$ 0,00</h2>
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10">
+            <div class="card shadow-sm mb-4">
+              <div class="card-body text-center">
+                <h4 class="mb-3">Saldo Atual</h4>
+                <h2 id="saldo" class="display-4 mb-0">R$ 0,00</h2>
               </div>
-
-              <a class="btn btn-outline-secondary m-2" href="login.html">
-                Ir para Login
-              </a>
             </div>
           </div>
         </div>
 
-
-
-          <div class="col-12 mt-3">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="text-center">Resumo Financeiro</h4>
-
-                <div class="row text-center">
-                  <div class="col-md-3 col-6 mb-3">
-                    <div class="p-3 border rounded">
-                      <div class="small">Total de Receitas</div>
-                      <div id="totalReceitas" class="font-weight-bold">R$ 0,00</div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-3 col-6 mb-3">
-                    <div class="p-3 border rounded">
-                      <div class="small">Total de Despesas</div>
-                      <div id="totalDespesas" class="font-weight-bold">R$ 0,00</div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-3 col-6 mb-3">
-                    <div class="p-3 border rounded">
-                      <div class="small">Quantidade Receitas</div>
-                      <div id="qtdReceitas" class="font-weight-bold">0</div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-3 col-6 mb-3">
-                    <div class="p-3 border rounded">
-                      <div class="small">Quantidade Despesas</div>
-                      <div id="qtdDespesas" class="font-weight-bold">0</div>
-                    </div>
-                  </div>
-                </div>
+        <div class="row">
+          <div class="col-12 col-md-6 col-xl-3 mb-3">
+            <div class="card card-stat h-100">
+              <div class="card-body text-center">
+                <div class="small text-muted">Total de Receitas</div>
+                <div id="totalReceitas" class="font-weight-bold mt-2">R$ 0,00</div>
               </div>
             </div>
           </div>
 
-          <div class="col-12 mt-3">
+          <div class="col-12 col-md-6 col-xl-3 mb-3">
+            <div class="card card-stat h-100">
+              <div class="card-body text-center">
+                <div class="small text-muted">Total de Despesas</div>
+                <div id="totalDespesas" class="font-weight-bold mt-2">R$ 0,00</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-xl-3 mb-3">
+            <div class="card card-stat h-100">
+              <div class="card-body text-center">
+                <div class="small text-muted">Quantidade de Receitas</div>
+                <div id="qtdReceitas" class="font-weight-bold mt-2">0</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-xl-3 mb-3">
+            <div class="card card-stat h-100">
+              <div class="card-body text-center">
+                <div class="small text-muted">Quantidade de Despesas</div>
+                <div id="qtdDespesas" class="font-weight-bold mt-2">0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
             <div class="card">
               <div class="card-body">
-                <h4 class="text-center">Transações Recentes</h4>
-
+                <h4 class="text-center mb-3">Transações Recentes</h4>
+                <div id="emptyState" class="alert alert-info mb-0 d-none">Nenhuma transação encontrada.</div>
                 <ul id="recentes" class="list-group"></ul>
               </div>
             </div>
@@ -167,11 +197,11 @@
         </div>
 
         <div class="modal-footer">
-          <button class="btn-confirmar" onclick="adicionarSaldo()">
+          <button class="btn-confirmar" type="button" onclick="adicionarSaldo()">
             Confirmar
           </button>
 
-          <button class="btn-fechar" data-dismiss="modal">
+          <button class="btn-fechar" type="button" data-dismiss="modal">
             Fechar
           </button>
         </div>
