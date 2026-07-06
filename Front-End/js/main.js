@@ -24,9 +24,13 @@ function verificarAutenticacao() {
     // Usuário não autenticado tentando acessar página privada
     if (!autenticado && !paginaPublica) {
 
+        sessionStorage.setItem(
+            "mensagem",
+            "Faça login para acessar esta página."
+        );
+
         window.location.replace("login.html");
         return;
-
     }
 
     // Usuário autenticado tentando acessar login ou cadastro

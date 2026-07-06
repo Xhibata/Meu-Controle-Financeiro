@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", async () => {
+
+  if (!Auth.isAuthenticated()) {
+    return;
+  }
+
   try {
     carregarUsuario();
     await carregarDashboard();
