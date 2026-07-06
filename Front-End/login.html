@@ -12,91 +12,47 @@
 </head>
 
 <body>
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-12 col-md-10 col-lg-8">
-        <div class="card shadow">
+  <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <div class="row justify-content-center w-100">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-5">
+
+        <div class="card shadow p-3">
           <div class="card-body">
-            <h2 class="text-center mb-4">Bem-vindo ao Cofrinho Digital</h2>
+            <h2 class="text-center mb-4 font-weight-bold">Bem-vindo ao Cofrinho Digital</h2>
             <p class="text-center text-muted mb-4">Faça login ou cadastre-se para acessar seu saldo, extrato e despesas.</p>
 
             <div id="authMessage" class="alert" style="display: none;"></div>
 
-            <div class="row">
-              <div class="col-md-6 mb-4">
-                <h4>Entrar</h4>
-                <form id="login-form">
-                  <div class="form-group">
-                    <label for="loginUsername">Email</label>
-                    <input id="loginUsername" class="form-control" type="text" placeholder="exemplo@email.com" required />
-                  </div>
-                  <div class="form-group">
-                    <label for="loginPassword">Senha</label>
-                    <input id="loginPassword" class="form-control" type="password" placeholder="Sua senha" required />
-                  </div>
-                  <div class="form-group form-check">
-                    <input id="loginRemember" class="form-check-input" type="checkbox" />
-                    <label class="form-check-label" for="loginRemember">Continuar conectado</label>
-                  </div>
-                  <button class="btn btn-primary btn-block" type="submit">Entrar</button>
-                  <button class="btn btn-secondary btn-block" type="button" onclick="window.location.href='cadastro.html'">Cadastrar</button>
-                </form>
+            <form id="formLogin">
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" class="form-control" type="email" placeholder="exemplo@email.com" required />
               </div>
-            </div>
+
+              <div class="form-group">
+                <label for="senha">Senha</label>
+                <input id="senha" class="form-control" type="password" placeholder="Sua senha" required />
+              </div>
+
+              <div class="form-group form-check my-3">
+                <input id="loginRemember" class="form-check-input" type="checkbox" />
+                <label class="form-check-label" for="loginRemember">Continuar conectado</label>
+              </div>
+
+              <button class="btn btn-primary btn-block mb-2" type="submit">Entrar</button>
+              <button class="btn btn-outline-secondary btn-block" type="button" onclick="window.location.href='cadastro.html'">Cadastrar</button>
+            </form>
+
           </div>
         </div>
+
       </div>
     </div>
   </div>
-  <script>
-document.getElementById("login-form").addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    const email = document.getElementById("loginUsername").value;
-    const senha = document.getElementById("loginPassword").value;
-
-    try {
-        const resposta = await fetch("http://localhost:8000/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email: email,
-                senha: senha
-            })
-        });
-
-        const dados = await resposta.json();
-
-        if (!resposta.ok) {
-            throw new Error(dados.detail || "Email ou senha inválidos.");
-        }
-
-
-        // Salva o token
-        localStorage.setItem("access_token", dados.access_token);
-        localStorage.setItem("token_type", dados.token_type);
-
-        // Se quiser salvar o email também
-        localStorage.setItem("usuario_email", email);
-
-
-
-        // Redireciona para a página principal
-        window.location.href = "index.html";
-    } catch (erro) {
-        alert(erro.message);
-    }
-});
-</script>
-
 </body>
-<script src="js/api.js"></script>
-<script src="js/auth.js"></script>
 <script src="js/utils.js"></script>
-<!-- <script src="js/testes/testeRequest.js"></script> -->
-<!-- <script src="js/testes/testeStorage.js"></script> -->
-<!-- <script src="js/testes/testeToken.js"></script> -->
-<!-- <script src="js/testes/testeAuth.js"></script> -->
+<script src="js/services/api.js"></script>
+<script src="js/services/auth.js"></script>
+<script src="js/main.js"></script>
+<script src="js/services/login.js"></script>
 </html>

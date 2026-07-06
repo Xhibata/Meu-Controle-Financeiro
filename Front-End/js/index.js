@@ -1,116 +1,108 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const token = localStorage.getItem('access_token');
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    carregarUsuario();
+    await carregarDashboard();
+    await carregarExtrato();
+  } catch (error) {
+    console.error(error);
 
-  if (!token) {
-    window.location.href = 'login.html';
+    if (error.status === 401) {
+        Auth.logout();
+        return;
+    }
+
+    Utils.mostrarErro(error.message);
+  }
+});
+
+async function carregarDashboard() {
+  const dashboard = await API.get("/dashboard");
+
+  document.getElementById("saldo").innerText =
+    formatCurrency(dashboard.saldo);
+
+  document.getElementById("totalReceitas").innerText =
+    formatCurrency(dashboard.total_receitas);
+
+  document.getElementById("totalDespesas").innerText =
+    formatCurrency(dashboard.total_despesas);
+
+  document.getElementById("qtdReceitas").innerText =
+    dashboard.quantidade_receitas;
+
+  document.getElementById("qtdDespesas").innerText =
+    dashboard.quantidade_despesas;
+}
+
+async function carregarExtrato() {
+  const lista = await API.get("/dashboard/extrato");
+
+  const ul = document.getElementById("recentes");
+
+  ul.innerHTML = "";
+
+  if (!lista.length) {
+    ul.innerHTML = `
+      <li class="list-group-item text-center text-muted">
+        Nenhuma movimentação encontrada.
+      </li>
+    `;
     return;
   }
 
-  const headers = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
-  };
+  lista.forEach((item) => {
+    const li = document.createElement("li");
 
-  const base = 'http://localhost:8000';
+    li.className =
+      "list-group-item d-flex justify-content-between align-items-center";
 
-  fetch(`${base}/dashboard`, { headers })
-    .then((r) => r.json())
-    .then((data) => {
-      if (data.detail) {
-        throw new Error(data.detail);
-      }
+    li.innerHTML = `
+      <div>
+        <div class="font-weight-bold">
+          ${escapeHtml(item.tipo)} - ${escapeHtml(item.descricao)}
+        </div>
 
-      document.getElementById('totalReceitas').innerText =
-        formatCurrency(data.total_receitas);
+        <small class="text-muted">
+          ${formatDate(item.data)}
+        </small>
+      </div>
 
-      document.getElementById('totalDespesas').innerText =
-        formatCurrency(data.total_despesas);
+      <span class="badge badge-primary badge-pill">
+        ${formatCurrency(item.valor)}
+      </span>
+    `;
 
-      document.getElementById('qtdReceitas').innerText =
-        data.quantidade_receitas;
-
-      document.getElementById('qtdDespesas').innerText =
-        data.quantidade_despesas;
-
-      // Injeta diretamente o saldo dinâmico vindo da API backend
-      document.getElementById('saldo').innerText =
-        formatCurrency(data.saldo);
-    })
-    .catch((err) => {
-      console.error('Erro ao carregar dashboard:', err);
-    });
-
-  fetch(`${base}/dashboard/extrato`, { headers })
-    .then((r) => r.json())
-    .then((lista) => {
-      const ul = document.getElementById('recentes');
-
-      ul.innerHTML = '';
-
-      lista.forEach((item) => {
-        const li = document.createElement('li');
-
-        li.className =
-          'list-group-item d-flex justify-content-between align-items-center';
-
-        li.innerHTML = `
-          <div>
-            <div class="font-weight-bold">
-              ${escapeHtml(item.tipo)} - ${escapeHtml(item.descricao)}
-            </div>
-
-            <small class="text-muted">
-              ${formatDate(item.data)}
-            </small>
-          </div>
-
-          <div class="badge badge-pill badge-secondary">
-            ${formatCurrency(item.valor)}
-          </div>
-        `;
-
-        ul.appendChild(li);
-      });
-    })
-    .catch((err) => {
-      console.error('Erro ao carregar extrato:', err);
-    });
-});
-
-function formatCurrency(value) {
-  const num = Number(value) || 0;
-
-  return num.toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
+    ul.appendChild(li);
   });
 }
 
-function formatDate(d) {
-  try {
-    const dt = new Date(d);
+function carregarUsuario() {
+  const usuario = Auth.getUsuario();
 
-    return dt.toLocaleDateString('pt-BR');
-  } catch {
-    return d;
-  }
+  if (!usuario) return;
+
+  document.getElementById("userName").innerText =
+    `Olá, ${usuario.nome}`;
 }
 
-function logout() {
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('token_type');
-  localStorage.removeItem('usuario_email');
-
-  window.location.href = 'login.html';
+function formatCurrency(valor) {
+  return Number(valor).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
 }
 
-function escapeHtml(str) {
-  if (!str) return '';
+function formatDate(data) {
+  return new Date(data).toLocaleDateString("pt-BR");
+}
 
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;');
+function escapeHtml(text) {
+  if (!text) return "";
+
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }

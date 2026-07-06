@@ -14,17 +14,13 @@ const API = {
   /**
    * Monta os cabeçalhos da requisição.
    */
-  buildHeaders(hasBody = true) {
+  buildHeaders() {
     const headers = {};
-
-    if (hasBody) {
-      headers["Content-Type"] = "application/json";
-    }
 
     const token = Auth.getToken();
 
     if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
+      headers.Authorization = `Bearer ${token}`;
     }
 
     return headers;
@@ -48,7 +44,10 @@ const API = {
   async post(endpoint, body) {
     const response = await fetch(`${this.BASE_URL}${endpoint}`, {
       method: "POST",
-      headers: this.buildHeaders(true),
+      headers: {
+        ...this.buildHeaders(),
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify(body),
     });
 
@@ -61,7 +60,10 @@ const API = {
   async put(endpoint, body) {
     const response = await fetch(`${this.BASE_URL}${endpoint}`, {
       method: "PUT",
-      headers: this.buildHeaders(true),
+      headers: {
+        ...this.buildHeaders(),
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify(body),
     });
 
@@ -108,7 +110,12 @@ const API = {
         }
       }
 
-      throw new Error(mensagem);
+      const erro = new Error(mensagem);
+
+      erro.status = response.status;
+      erro.data = data;
+
+      throw erro;
     }
 
     return data;

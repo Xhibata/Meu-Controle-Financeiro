@@ -41,7 +41,6 @@ const Auth = {
 
   logout() {
     Utils.remover(STORAGE.TOKEN);
-
     Utils.remover(STORAGE.USUARIO);
 
     window.location.replace("login.html");
@@ -59,15 +58,6 @@ const Auth = {
    */
   getToken() {
     return Utils.recuperar(STORAGE.TOKEN);
-  },
-
-  /**
-   * Remove tudo relacionado ao login.
-   */
-  logout() {
-    Utils.remover(STORAGE.TOKEN);
-
-    Utils.remover(STORAGE.USUARIO);
   },
 
   /**
@@ -94,4 +84,10 @@ const Auth = {
   getUsuario() {
     return Utils.recuperar(STORAGE.USUARIO);
   },
+
+  getNomeUsuario() {
+    const usuario = this.getUsuario();
+
+    return usuario ? usuario.nome : "";
+  }
 };
