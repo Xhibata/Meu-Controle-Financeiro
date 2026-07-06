@@ -39,15 +39,40 @@ function setUserName() {
   }
 }
 
+function normalizeTransacoes(payload) {
+  if (Array.isArray(payload)) {
+    return payload;
+  }
+
+  if (!payload || typeof payload !== "object") {
+    return [];
+  }
+
+  if (Array.isArray(payload.items)) {
+    return payload.items;
+  }
+
+  if (Array.isArray(payload.transacoes)) {
+    return payload.transacoes;
+  }
+
+  if (Array.isArray(payload.movimentos)) {
+    return payload.movimentos;
+  }
+
+  return [];
+}
+
 function renderTransacoes(lista) {
   const ul = document.getElementById("recentes");
   const emptyState = document.getElementById("emptyState");
 
   if (!ul) return;
 
+  const transacoes = normalizeTransacoes(lista);
   ul.innerHTML = "";
 
-  if (!lista || lista.length === 0) {
+  if (!transacoes.length) {
     if (emptyState) {
       emptyState.classList.remove("d-none");
     }
@@ -58,16 +83,22 @@ function renderTransacoes(lista) {
     emptyState.classList.add("d-none");
   }
 
-  lista.forEach((item) => {
+  transacoes.forEach((item) => {
+    const tipo = item.tipo || item.tipo_transacao || item.classificacao || "Movimento";
+    const descricao = item.descricao || item.descricao_lancamento || item.nome || "Sem descrição";
+    const valor = Number(item.valor ?? item.valor_total ?? 0);
+    const dataTexto = item.data || item.data_lancamento || item.created_at || item.data_criacao;
+    const badgeClass = /receita|entrada|credit/i.test(String(tipo)) ? "badge-success" : "badge-danger";
+
     const li = document.createElement("li");
     li.className = "list-group-item d-flex justify-content-between align-items-center flex-wrap gap-2";
 
     li.innerHTML = `
       <div>
-        <div class="font-weight-bold">${item.tipo} - ${item.descricao}</div>
-        <small class="text-muted">${formatDate(item.data)}</small>
+        <div class="font-weight-bold">${tipo} - ${descricao}</div>
+        <small class="text-muted">${formatDate(dataTexto)}</small>
       </div>
-      <div class="badge badge-pill badge-secondary">${formatCurrency(item.valor)}</div>
+      <div class="badge badge-pill ${badgeClass}">${formatCurrency(valor)}</div>
     `;
 
     ul.appendChild(li);
@@ -107,12 +138,60 @@ async function adicionarSaldo() {
     }
 
     valorInput.value = "";
-    $(["#modalSaldo"]).modal("hide");
+    $("#modalSaldo").modal("hide");
     await carregarDashboard();
     alert("Saldo adicionado com sucesso!");
   } catch (error) {
     console.error(error);
     alert(error.message || "Não foi possível adicionar o saldo.");
+  }
+}
+
+async function carregarTransacoesRecentes() {
+  const recentesEl = document.getElementById("recentes");
+
+  if (recentesEl) {
+    recentesEl.innerHTML = '<li class="list-group-item text-center">Carregando...</li>';
+  }
+
+  try {
+    const [dashboardResponse, extratoResponse, despesasResponse] = await Promise.allSettled([
+      fetch(`${API_BASE}/dashboard/extrato`, { headers: getAuthHeaders() }),
+      fetch(`${API_BASE}/extrato`, { headers: getAuthHeaders() }),
+      fetch(`${API_BASE}/despesas`, { headers: getAuthHeaders() }),
+    ]);
+
+    const transacoes = [];
+
+    if (dashboardResponse.status === "fulfilled" && dashboardResponse.value.ok) {
+      const lista = await dashboardResponse.value.json().catch(() => []);
+      transacoes.push(...normalizeTransacoes(lista).map((item) => ({ ...item, source: item.source || "dashboard" })));
+    }
+
+    if (extratoResponse.status === "fulfilled" && extratoResponse.value.ok) {
+      const lista = await extratoResponse.value.json().catch(() => []);
+      transacoes.push(...normalizeTransacoes(lista).map((item) => ({ ...item, source: item.source || "extrato" })));
+    }
+
+    if (despesasResponse.status === "fulfilled" && despesasResponse.value.ok) {
+      const lista = await despesasResponse.value.json().catch(() => []);
+      transacoes.push(
+        ...lista.map((item) => ({
+          tipo: "Despesa",
+          descricao: item.descricao || "Sem descrição",
+          valor: Number(item.valor ?? 0),
+          data: item.data || null,
+          source: "despesa",
+        }))
+      );
+    }
+
+    renderTransacoes(transacoes);
+  } catch (error) {
+    console.error(error);
+    if (recentesEl) {
+      recentesEl.innerHTML = '<li class="list-group-item text-danger">Não foi possível carregar as transações.</li>';
+    }
   }
 }
 
@@ -122,11 +201,6 @@ async function carregarDashboard() {
   const despesasEl = document.getElementById("totalDespesas");
   const qtdReceitasEl = document.getElementById("qtdReceitas");
   const qtdDespesasEl = document.getElementById("qtdDespesas");
-  const recentesEl = document.getElementById("recentes");
-
-  if (recentesEl) {
-    recentesEl.innerHTML = '<li class="list-group-item text-center">Carregando...</li>';
-  }
 
   try {
     const dashboardResponse = await fetch(`${API_BASE}/dashboard`, {
@@ -170,27 +244,7 @@ async function carregarDashboard() {
     }
   }
 
-  try {
-    const extratoResponse = await fetch(`${API_BASE}/dashboard/extrato`, {
-      headers: getAuthHeaders(),
-    });
-
-    if (!extratoResponse.ok) {
-      if (extratoResponse.status === 401) {
-        logout();
-        return;
-      }
-      throw new Error("Erro ao carregar o extrato.");
-    }
-
-    const lista = await extratoResponse.json();
-    renderTransacoes(lista);
-  } catch (error) {
-    console.error(error);
-    if (recentesEl) {
-      recentesEl.innerHTML = '<li class="list-group-item text-danger">Não foi possível carregar as transações.</li>';
-    }
-  }
+  await carregarTransacoesRecentes();
 }
 
 document.addEventListener("DOMContentLoaded", async () => {

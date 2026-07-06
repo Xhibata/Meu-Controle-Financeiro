@@ -1,3 +1,5 @@
+from datetime import date
+
 from sqlalchemy import func
 
 from models import Despesa, Extrato
@@ -66,7 +68,7 @@ class DashboardService:
             )
 
         movimentos.sort(
-            key=lambda x: x["data"],
+            key=lambda x: x.get("data") or date.min,
             reverse=True,
         )
 

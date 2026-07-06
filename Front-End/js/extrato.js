@@ -1,4 +1,6 @@
 const API_URL = "http://localhost:8000/extrato";
+const DASHBOARD_EXTRATO_URL = "http://localhost:8000/dashboard/extrato";
+const DESPESAS_URL = "http://localhost:8000/despesas";
 
 const lista = document.getElementById("lista");
 const saldoAtual = document.getElementById("saldoAtual");
@@ -16,7 +18,9 @@ function getAuthHeaders() {
 }
 
 function formatCurrency(value) {
-  return Number(value || 0).toLocaleString("pt-BR", {
+  const amount = Number(value || 0) / 100;
+
+  return amount.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
@@ -37,15 +41,32 @@ function renderEmptyState() {
   }
 }
 
+function normalizeLancamentos(dados) {
+  if (!Array.isArray(dados)) {
+    return [];
+  }
+
+  return dados.map((item) => ({
+    id: item.id,
+    tipo: item.tipo || item.tipo_transacao || item.classificacao || "Despesa",
+    descricao: item.descricao || item.descricao_lancamento || item.nome || "Sem descrição",
+    valor: Number(item.valor ?? item.valor_total ?? 0),
+    data: item.data || item.data_lancamento || item.created_at || item.data_criacao || null,
+    source: item.source || "extrato",
+  }));
+}
+
 function renderExtrato(dados) {
   if (!lista) return;
 
+  const lancamentos = normalizeLancamentos(dados);
+
   lista.innerHTML = "";
   if (emptyState) {
-    emptyState.classList.toggle("d-none", Array.isArray(dados) && dados.length > 0);
+    emptyState.classList.toggle("d-none", lancamentos.length > 0);
   }
 
-  if (!Array.isArray(dados) || dados.length === 0) {
+  if (!lancamentos.length) {
     renderEmptyState();
     return;
   }
@@ -53,30 +74,37 @@ function renderExtrato(dados) {
   let totalReceitas = 0;
   let totalDespesas = 0;
 
-  dados.forEach((item) => {
+  lancamentos.forEach((item) => {
     const li = document.createElement("li");
     li.className = "list-group-item d-flex justify-content-between align-items-center flex-wrap gap-2";
 
     const tipo = item.tipo === "Receita" ? "text-success" : "text-danger";
     const dataTexto = item.data ? new Date(item.data).toLocaleDateString("pt-BR") : "Sem data";
+    const tipoItem = item.tipo || "Despesa";
+    const podeEditar = Number.isInteger(item.id);
+    const botoesAcoes = podeEditar
+      ? `
+        <button class="btn btn-warning btn-sm" onclick="editarExtrato(${item.id}, '${item.source || 'extrato'}')">Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="excluirExtrato(${item.id}, '${item.source || 'extrato'}')">Excluir</button>
+      `
+      : "";
 
     li.innerHTML = `
       <div class="item-info">
         <strong>${item.descricao}</strong><br>
         <small>${dataTexto}</small>
-        <div class="mt-1"><span class="badge ${tipo} badge-pill">${item.tipo}</span></div>
+        <div class="mt-1"><span class="badge ${tipo} badge-pill">${tipoItem}</span></div>
       </div>
 
       <div class="item-actions d-flex align-items-center flex-wrap gap-2">
         <strong>${formatCurrency(item.valor)}</strong>
-        <button class="btn btn-warning btn-sm" onclick="editarExtrato(${item.id})">Editar</button>
-        <button class="btn btn-danger btn-sm" onclick="excluirExtrato(${item.id})">Excluir</button>
+        ${botoesAcoes}
       </div>
     `;
 
     lista.appendChild(li);
 
-    if (item.tipo === "Receita") {
+    if (tipoItem === "Receita") {
       totalReceitas += Number(item.valor || 0);
     } else {
       totalDespesas += Number(item.valor || 0);
@@ -112,20 +140,39 @@ async function listarExtrato() {
   }
 
   try {
-    const response = await fetch(API_URL, {
-      headers: getAuthHeaders(),
-    });
+    const [dashboardResponse, extratoResponse, despesasResponse] = await Promise.allSettled([
+      fetch(DASHBOARD_EXTRATO_URL, { headers: getAuthHeaders() }),
+      fetch(API_URL, { headers: getAuthHeaders() }),
+      fetch(DESPESAS_URL, { headers: getAuthHeaders() }),
+    ]);
 
-    if (!response.ok) {
-      if (response.status === 401) {
-        logout();
-        return;
-      }
-      throw new Error("Erro ao buscar o extrato.");
+    const lancamentos = [];
+
+    if (dashboardResponse.status === "fulfilled" && dashboardResponse.value.ok) {
+      const dados = await dashboardResponse.value.json().catch(() => []);
+      lancamentos.push(...normalizeLancamentos(dados).map((item) => ({ ...item, source: item.source || "dashboard" })));
     }
 
-    const dados = await response.json();
-    renderExtrato(dados);
+    if (extratoResponse.status === "fulfilled" && extratoResponse.value.ok) {
+      const dados = await extratoResponse.value.json().catch(() => []);
+      lancamentos.push(...normalizeLancamentos(dados).map((item) => ({ ...item, source: item.source || "extrato" })));
+    }
+
+    if (despesasResponse.status === "fulfilled" && despesasResponse.value.ok) {
+      const dados = await despesasResponse.value.json().catch(() => []);
+      lancamentos.push(
+        ...dados.map((item) => ({
+          id: item.id,
+          tipo: "Despesa",
+          descricao: item.descricao || "Sem descrição",
+          valor: Number(item.valor ?? 0),
+          data: item.data || null,
+          source: "despesa",
+        }))
+      );
+    }
+
+    renderExtrato(lancamentos);
   } catch (erro) {
     console.error(erro);
     if (lista) {
@@ -134,9 +181,11 @@ async function listarExtrato() {
   }
 }
 
-async function editarExtrato(id) {
+async function editarExtrato(id, source = "extrato") {
+  const endpoint = source === "despesa" ? `${DESPESAS_URL}/${id}` : `${API_URL}/${id}`;
+
   try {
-    const response = await fetch(`${API_URL}/${id}`, {
+    const response = await fetch(endpoint, {
       headers: getAuthHeaders(),
     });
 
@@ -146,24 +195,30 @@ async function editarExtrato(id) {
 
     const item = await response.json();
     const novaDescricao = prompt("Descrição", item.descricao);
-    const novoValor = prompt("Valor", item.valor);
-    const novoTipo = prompt("Tipo (Receita ou Despesa)", item.tipo);
+    const novoValor = prompt("Valor", item.valor / 100);
 
-    if (novaDescricao === null || novoValor === null || novoTipo === null) {
+    if (novaDescricao === null || novoValor === null) {
       return;
     }
 
-    await fetch(`${API_URL}/${id}`, {
+    const body = source === "despesa"
+      ? {
+          descricao: novaDescricao,
+          valor: Math.round(Number(novoValor) * 100),
+        }
+      : {
+          descricao: novaDescricao,
+          valor: Math.round(Number(novoValor) * 100),
+          tipo: item.tipo || "Despesa",
+        };
+
+    await fetch(endpoint, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         ...getAuthHeaders(),
       },
-      body: JSON.stringify({
-        descricao: novaDescricao,
-        valor: Number(novoValor),
-        tipo: novoTipo,
-      }),
+      body: JSON.stringify(body),
     });
 
     listarExtrato();
@@ -173,11 +228,13 @@ async function editarExtrato(id) {
   }
 }
 
-async function excluirExtrato(id) {
+async function excluirExtrato(id, source = "extrato") {
   if (!confirm("Deseja excluir este registro?")) return;
 
+  const endpoint = source === "despesa" ? `${DESPESAS_URL}/${id}` : `${API_URL}/${id}`;
+
   try {
-    await fetch(`${API_URL}/${id}`, {
+    await fetch(endpoint, {
       method: "DELETE",
       headers: getAuthHeaders(),
     });
