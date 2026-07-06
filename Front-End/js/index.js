@@ -166,46 +166,48 @@ async function carregarTransacoesRecentes() {
   const recentesEl = document.getElementById("recentes");
 
   if (recentesEl) {
-    recentesEl.innerHTML = '<li class="list-group-item text-center">Carregando...</li>';
+    recentesEl.innerHTML =
+      '<li class="list-group-item text-center">Carregando...</li>';
   }
 
   try {
-    const [dashboardResponse, extratoResponse, despesasResponse] = await Promise.allSettled([
-      fetch(`${API_BASE}/dashboard/extrato`, { headers: getAuthHeaders() }),
-      fetch(`${API_BASE}/extrato`, { headers: getAuthHeaders() }),
-      fetch(`${API_BASE}/despesas`, { headers: getAuthHeaders() }),
+    const [extratoResponse, despesasResponse] = await Promise.all([
+      fetch(`${API_BASE}/extrato`, {
+        headers: getAuthHeaders(),
+      }),
+      fetch(`${API_BASE}/despesas`, {
+        headers: getAuthHeaders(),
+      }),
     ]);
 
     const transacoes = [];
 
-    if (dashboardResponse.status === "fulfilled" && dashboardResponse.value.ok) {
-      const lista = await dashboardResponse.value.json().catch(() => []);
-      transacoes.push(...normalizeTransacoes(lista).map((item) => ({ ...item, source: item.source || "dashboard" })));
+    if (extratoResponse.ok) {
+      const lista = await extratoResponse.json();
+      transacoes.push(...normalizeTransacoes(lista));
     }
 
-    if (extratoResponse.status === "fulfilled" && extratoResponse.value.ok) {
-      const lista = await extratoResponse.value.json().catch(() => []);
-      transacoes.push(...normalizeTransacoes(lista).map((item) => ({ ...item, source: item.source || "extrato" })));
-    }
+    if (despesasResponse.ok) {
+      const despesas = await despesasResponse.json();
 
-    if (despesasResponse.status === "fulfilled" && despesasResponse.value.ok) {
-      const lista = await despesasResponse.value.json().catch(() => []);
       transacoes.push(
-        ...lista.map((item) => ({
+        ...despesas.map((item) => ({
           tipo: "Despesa",
-          descricao: item.descricao || "Sem descrição",
+          descricao: item.descricao,
           valor: Number(item.valor ?? 0),
-          data: item.data || null,
-          source: "despesa",
+          data: item.data,
         }))
       );
     }
 
     renderTransacoes(transacoes);
-  } catch (error) {
-    console.error(error);
+
+  } catch (erro) {
+    console.error(erro);
+
     if (recentesEl) {
-      recentesEl.innerHTML = '<li class="list-group-item text-danger">Não foi possível carregar as transações.</li>';
+      recentesEl.innerHTML =
+        '<li class="list-group-item text-danger">Erro ao carregar.</li>';
     }
   }
 }

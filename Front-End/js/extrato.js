@@ -1,5 +1,4 @@
 const API_URL = "http://localhost:8000/extrato";
-const DASHBOARD_EXTRATO_URL = "http://localhost:8000/dashboard/extrato";
 const DESPESAS_URL = "http://localhost:8000/despesas";
 
 const lista = document.getElementById("lista");
@@ -136,30 +135,32 @@ async function listarExtrato() {
   }
 
   if (lista) {
-    lista.innerHTML = '<li class="list-group-item text-center">Carregando...</li>';
+    lista.innerHTML =
+      '<li class="list-group-item text-center">Carregando...</li>';
   }
 
   try {
-    const [dashboardResponse, extratoResponse, despesasResponse] = await Promise.allSettled([
-      fetch(DASHBOARD_EXTRATO_URL, { headers: getAuthHeaders() }),
-      fetch(API_URL, { headers: getAuthHeaders() }),
-      fetch(DESPESAS_URL, { headers: getAuthHeaders() }),
+    const [extratoResponse, despesasResponse] = await Promise.all([
+      fetch(API_URL, {
+        headers: getAuthHeaders(),
+      }),
+
+      fetch(DESPESAS_URL, {
+        headers: getAuthHeaders(),
+      }),
     ]);
 
     const lancamentos = [];
 
-    if (dashboardResponse.status === "fulfilled" && dashboardResponse.value.ok) {
-      const dados = await dashboardResponse.value.json().catch(() => []);
-      lancamentos.push(...normalizeLancamentos(dados).map((item) => ({ ...item, source: item.source || "dashboard" })));
+    if (extratoResponse.ok) {
+      const dados = await extratoResponse.json();
+
+      lancamentos.push(...normalizeLancamentos(dados));
     }
 
-    if (extratoResponse.status === "fulfilled" && extratoResponse.value.ok) {
-      const dados = await extratoResponse.value.json().catch(() => []);
-      lancamentos.push(...normalizeLancamentos(dados).map((item) => ({ ...item, source: item.source || "extrato" })));
-    }
+    if (despesasResponse.ok) {
+      const dados = await despesasResponse.json();
 
-    if (despesasResponse.status === "fulfilled" && despesasResponse.value.ok) {
-      const dados = await despesasResponse.value.json().catch(() => []);
       lancamentos.push(
         ...dados.map((item) => ({
           id: item.id,
@@ -173,10 +174,13 @@ async function listarExtrato() {
     }
 
     renderExtrato(lancamentos);
+
   } catch (erro) {
     console.error(erro);
+
     if (lista) {
-      lista.innerHTML = '<li class="list-group-item text-danger">Não foi possível carregar o extrato.</li>';
+      lista.innerHTML =
+        '<li class="list-group-item text-danger">Não foi possível carregar o extrato.</li>';
     }
   }
 }
@@ -203,14 +207,14 @@ async function editarExtrato(id, source = "extrato") {
 
     const body = source === "despesa"
       ? {
-          descricao: novaDescricao,
-          valor: Math.round(Number(novoValor) * 100),
-        }
+        descricao: novaDescricao,
+        valor: Math.round(Number(novoValor) * 100),
+      }
       : {
-          descricao: novaDescricao,
-          valor: Math.round(Number(novoValor) * 100),
-          tipo: item.tipo || "Despesa",
-        };
+        descricao: novaDescricao,
+        valor: Math.round(Number(novoValor) * 100),
+        tipo: item.tipo || "Despesa",
+      };
 
     await fetch(endpoint, {
       method: "PUT",
