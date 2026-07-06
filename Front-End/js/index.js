@@ -29,37 +29,48 @@ function formatDate(d) {
     return d;
   }
 }
-
 function setUserName() {
-  const userNameEl = document.getElementById("userName");
-  const email = localStorage.getItem("usuario_email");
+
+  const userNameEl =
+    document.getElementById("userName");
+
+  const nome =
+    localStorage.getItem("usuario_nome");
 
   if (userNameEl) {
-    userNameEl.textContent = email ? `Olá, ${email}` : "Olá, usuário";
+
+    userNameEl.textContent =
+
+      nome
+
+        ?
+
+        `Olá, ${nome}`
+
+        :
+
+        "Olá, usuário";
+
   }
+
 }
 
 function normalizeTransacoes(payload) {
   if (Array.isArray(payload)) {
     return payload;
   }
-
   if (!payload || typeof payload !== "object") {
     return [];
   }
-
   if (Array.isArray(payload.items)) {
     return payload.items;
   }
-
   if (Array.isArray(payload.transacoes)) {
     return payload.transacoes;
   }
-
   if (Array.isArray(payload.movimentos)) {
     return payload.movimentos;
   }
-
   return [];
 }
 
@@ -106,10 +117,14 @@ function renderTransacoes(lista) {
 }
 
 function logout() {
+
   localStorage.removeItem("access_token");
   localStorage.removeItem("token_type");
   localStorage.removeItem("usuario_email");
+  localStorage.removeItem("usuario_nome");
+
   window.location.href = "login.html";
+
 }
 
 async function adicionarSaldo() {
