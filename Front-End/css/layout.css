@@ -1,0 +1,127 @@
+/* ==========================================
+   LAYOUT PRINCIPAL
+========================================== */
+
+.app {
+
+    display: flex;
+
+    min-height: 100vh;
+
+    background: var(--background);
+
+}
+
+/* ==========================================
+   CONTEÚDO
+========================================== */
+
+.content {
+
+    flex: 1;
+
+    margin-left: var(--sidebar-width);
+
+    min-height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    transition: var(--transition);
+
+}
+
+/* ==========================================
+   ÁREA PRINCIPAL
+========================================== */
+
+.main {
+
+    flex: 1;
+
+    padding: 32px;
+
+    margin-top: var(--navbar-height);
+
+}
+
+/* ==========================================
+   CONTAINER
+========================================== */
+
+.container-fluid {
+
+    width: 100%;
+
+    margin: auto;
+
+}
+
+/* ==========================================
+   GRID
+========================================== */
+
+.grid {
+
+    display: grid;
+
+    gap: 24px;
+
+}
+
+.grid-2 {
+
+    grid-template-columns: repeat(2,1fr);
+
+}
+
+.grid-3 {
+
+    grid-template-columns: repeat(3,1fr);
+
+}
+
+.grid-4 {
+
+    grid-template-columns: repeat(4,1fr);
+
+}
+
+/* ==========================================
+   RESPONSIVO
+========================================== */
+
+@media(max-width:1200px){
+
+    .grid-4{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .content{
+
+        margin-left:0;
+
+    }
+
+    .main{
+
+        padding:20px;
+
+    }
+
+    .grid-2,
+    .grid-3,
+    .grid-4{
+
+        grid-template-columns:1fr;
+
+    }
+
+}

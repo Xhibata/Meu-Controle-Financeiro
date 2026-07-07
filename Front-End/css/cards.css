@@ -1,0 +1,129 @@
+/* ==========================================
+   CARD
+========================================== */
+
+.card{
+
+    background:white;
+
+    border-radius:var(--radius-lg);
+
+    padding:24px;
+
+    box-shadow:var(--shadow-sm);
+
+    border:1px solid var(--border);
+
+    transition:var(--transition);
+
+}
+
+.card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:var(--shadow-md);
+
+}
+
+.card-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.card-title{
+
+    font-size:18px;
+
+    font-weight:600;
+
+}
+
+.card-subtitle{
+
+    color:var(--text-light);
+
+    font-size:14px;
+
+}
+
+.card-body{
+
+    margin-top:12px;
+
+}
+
+.card-footer{
+
+    margin-top:24px;
+
+    border-top:1px solid var(--border);
+
+    padding-top:20px;
+
+}
+
+/* Dashboard */
+
+.stat-card{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.stat-icon{
+
+    width:60px;
+
+    height:60px;
+
+    border-radius:16px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:var(--primary-light);
+
+    color:var(--primary);
+
+    font-size:28px;
+
+}
+
+.stat-value{
+
+    font-size:32px;
+
+    font-weight:700;
+
+    margin:8px 0;
+
+}
+
+.stat-label{
+
+    color:var(--text-light);
+
+}
+
+.stat-growth{
+
+    font-size:14px;
+
+    color:var(--success);
+
+}

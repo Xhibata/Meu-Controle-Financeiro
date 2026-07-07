@@ -1,0 +1,143 @@
+/* ==========================================
+   FORMULÁRIOS
+========================================== */
+
+.form-group{
+
+    margin-bottom:20px;
+
+}
+
+.form-label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:600;
+
+    color:var(--text);
+
+}
+
+.form-control{
+
+    width:100%;
+
+    padding:14px 16px;
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius-sm);
+
+    background:white;
+
+    transition:var(--transition);
+
+    color:var(--text);
+
+}
+
+.form-control:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 4px rgba(37,99,235,.15);
+
+}
+
+.form-control::placeholder{
+
+    color:var(--text-muted);
+
+}
+
+/* Select */
+
+select.form-control{
+
+    cursor:pointer;
+
+}
+
+/* Textarea */
+
+textarea.form-control{
+
+    resize:vertical;
+
+    min-height:120px;
+
+}
+
+/* Input Group */
+
+.input-group{
+
+    display:flex;
+
+}
+
+.input-group .form-control{
+
+    border-radius:var(--radius-sm) 0 0 var(--radius-sm);
+
+}
+
+.input-group-text{
+
+    padding:14px 18px;
+
+    background:#f8fafc;
+
+    border:1px solid var(--border);
+
+    border-left:none;
+
+    border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+
+}
+
+/* Checkbox */
+
+.form-check{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.form-check input{
+
+    width:18px;
+
+    height:18px;
+
+}
+
+/* Validação */
+
+.is-invalid{
+
+    border-color:var(--danger);
+
+}
+
+.invalid-feedback{
+
+    margin-top:6px;
+
+    color:var(--danger);
+
+    font-size:13px;
+
+}
+
+.is-valid{
+
+    border-color:var(--success);
+
+}

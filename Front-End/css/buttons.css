@@ -1,0 +1,155 @@
+/* ==========================================
+   BOTÕES
+========================================== */
+
+.btn {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 12px 20px;
+
+    border-radius: var(--radius-sm);
+
+    font-weight: 600;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+
+    border: none;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+}
+
+.btn:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow: var(--shadow-sm);
+
+}
+
+.btn:active {
+
+    transform: scale(.98);
+
+}
+
+/* Primário */
+
+.btn-primary {
+
+    background: var(--primary);
+
+    color: white;
+
+}
+
+.btn-primary:hover {
+
+    background: var(--primary-dark);
+
+}
+
+/* Secundário */
+
+.btn-secondary {
+
+    background: white;
+
+    color: var(--text);
+
+    border: 1px solid var(--border);
+
+}
+
+.btn-secondary:hover {
+
+    background: #f8fafc;
+
+}
+
+/* Sucesso */
+
+.btn-success {
+
+    background: var(--success);
+
+    color: white;
+
+}
+
+/* Perigo */
+
+.btn-danger {
+
+    background: var(--danger);
+
+    color: white;
+
+}
+
+/* Aviso */
+
+.btn-warning {
+
+    background: var(--warning);
+
+    color: white;
+
+}
+
+/* Outline */
+
+.btn-outline {
+
+    border: 2px solid var(--primary);
+
+    color: var(--primary);
+
+    background: transparent;
+
+}
+
+.btn-outline:hover {
+
+    background: var(--primary);
+
+    color: white;
+
+}
+
+/* Tamanhos */
+
+.btn-sm {
+
+    padding: 8px 14px;
+
+    font-size: 13px;
+
+}
+
+.btn-lg {
+
+    padding: 16px 28px;
+
+    font-size: 17px;
+
+}
+
+.btn-block {
+
+    width: 100%;
+
+}

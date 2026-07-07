@@ -1,0 +1,18 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Montenegrin+Gothic+One&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
+
+@import url("./variables.css");
+@import url("./reset.css");
+@import url("./typography.css");
+@import url("./animations.css");
+
+@import url("./layout.css");
+@import url("./sidebar.css");
+@import url("./navbar.css");
+
+@import url("./buttons.css");
+@import url("./cards.css");
+@import url("./forms.css");
+@import url("./tables.css");
+
+@import url("./utilities.css");

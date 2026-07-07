@@ -1,0 +1,92 @@
+*,
+*::before,
+*::after{
+
+    margin:0;
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+body{
+
+    background:var(--background);
+
+    color:var(--text);
+
+    font-family:var(--font-family);
+
+    font-size:16px;
+
+    line-height:1.5;
+
+    min-height:100vh;
+
+    -webkit-font-smoothing:antialiased;
+
+}
+
+img{
+
+    display:block;
+
+    max-width:100%;
+
+}
+
+a{
+
+    color:inherit;
+
+    text-decoration:none;
+
+}
+
+button{
+
+    font:inherit;
+
+    border:none;
+
+    outline:none;
+
+    cursor:pointer;
+
+    background:none;
+
+}
+
+input,
+textarea,
+select{
+
+    font:inherit;
+
+    outline:none;
+
+    border:none;
+
+    background:none;
+
+}
+
+ul{
+
+    list-style:none;
+
+}
+
+table{
+
+    border-collapse:collapse;
+
+    width:100%;
+
+}

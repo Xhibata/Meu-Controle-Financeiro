@@ -1,0 +1,139 @@
+/* ==========================================
+   TABELAS
+========================================== */
+
+.table-container{
+
+    background:white;
+
+    border-radius:var(--radius-lg);
+
+    overflow:hidden;
+
+    border:1px solid var(--border);
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+.table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.table thead{
+
+    background:#f8fafc;
+
+}
+
+.table th{
+
+    padding:18px;
+
+    text-align:left;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:var(--text);
+
+    border-bottom:1px solid var(--border);
+
+}
+
+.table td{
+
+    padding:18px;
+
+    border-bottom:1px solid #edf2f7;
+
+    color:var(--text-light);
+
+}
+
+.table tbody tr{
+
+    transition:var(--transition);
+
+}
+
+.table tbody tr:hover{
+
+    background:#f8fafc;
+
+}
+
+/* Badge */
+
+.badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+.badge-success{
+
+    background:var(--success-light);
+
+    color:var(--success);
+
+}
+
+.badge-danger{
+
+    background:var(--danger-light);
+
+    color:var(--danger);
+
+}
+
+.badge-warning{
+
+    background:var(--warning-light);
+
+    color:var(--warning);
+
+}
+
+.badge-primary{
+
+    background:var(--primary-light);
+
+    color:var(--primary);
+
+}
+
+/* Responsividade */
+
+@media(max-width:768px){
+
+    .table-container{
+
+        overflow-x:auto;
+
+    }
+
+    .table{
+
+        min-width:700px;
+
+    }
+
+}

@@ -1,0 +1,338 @@
+/* ===========================================================
+   AUTH LAYOUT
+=========================================================== */
+
+.auth-page {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 40px;
+
+    background: linear-gradient(135deg,
+            #eff6ff 0%,
+            #f8fafc 50%,
+            #ffffff 100%);
+
+}
+
+/* ===========================================================
+   CONTAINER
+=========================================================== */
+
+.auth-container {
+
+    width: 100%;
+
+    max-width: 1100px;
+
+    min-height: 650px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 480px;
+
+    background: white;
+
+    border-radius: 24px;
+
+    overflow: hidden;
+
+    box-shadow: var(--shadow-lg);
+
+}
+
+/* ===========================================================
+   PAINEL ESQUERDO
+=========================================================== */
+
+.auth-banner {
+
+    background: linear-gradient(160deg,
+            var(--primary),
+            var(--primary-dark));
+
+    color: white;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    padding: 60px;
+
+}
+
+.auth-logo {
+
+    font-size: 34px;
+
+    font-weight: 700;
+
+    margin-bottom: 40px;
+
+}
+
+.auth-title {
+
+    font-size: 42px;
+
+    line-height: 1.2;
+
+    margin-bottom: 24px;
+
+}
+
+.auth-text {
+
+    font-size: 17px;
+
+    line-height: 1.7;
+
+    color: rgba(255, 255, 255, .85);
+
+}
+
+.auth-image {
+
+    margin-top: 60px;
+
+    display: flex;
+
+    justify-content: center;
+
+}
+
+.auth-image img {
+
+    max-width: 100%;
+
+}
+
+/* ===========================================================
+   FORMULÁRIO
+=========================================================== */
+
+.auth-form {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 60px;
+
+}
+
+.auth-card {
+
+    width: 100%;
+
+}
+
+.auth-card h2 {
+
+    margin-bottom: 8px;
+
+}
+
+.auth-card p {
+
+    margin-bottom: 36px;
+
+}
+
+/* ===========================================================
+   INPUTS
+=========================================================== */
+
+.form-group {
+
+    margin-bottom: 22px;
+
+}
+
+.form-label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-weight: 600;
+
+}
+
+.input-icon {
+
+    position: relative;
+
+}
+
+.input-icon i {
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 18px;
+
+    transform: translateY(-50%);
+
+    color: var(--text-muted);
+
+    font-size: 18px;
+
+    transition: var(--transition);
+
+}
+
+.input-icon input:focus+i {
+
+    color: var(--primary);
+
+}
+
+.input-icon input {
+
+    width: 100%;
+
+    height: 54px;
+
+    padding-left: 48px;
+
+}
+
+/* ===========================================================
+   LINKS
+=========================================================== */
+
+.auth-link {
+
+    margin-top: 26px;
+
+    text-align: center;
+
+    color: var(--text-light);
+
+}
+
+.auth-link a {
+
+    color: var(--primary);
+
+    font-weight: 600;
+
+    transition: var(--transition);
+
+}
+
+.auth-link a:hover {
+
+    color: var(--primary-dark);
+
+}
+
+/* ===========================================================
+   DIVISOR
+=========================================================== */
+
+.auth-divider {
+
+    display: flex;
+
+    align-items: center;
+
+    margin: 30px 0;
+
+    color: var(--text-muted);
+
+    font-size: 14px;
+
+}
+
+.auth-divider::before,
+
+.auth-divider::after {
+
+    content: "";
+
+    flex: 1;
+
+    height: 1px;
+
+    background: var(--border);
+
+}
+
+.auth-divider span {
+
+    padding: 0 15px;
+
+}
+
+/* ===========================================================
+   BOTÃO
+=========================================================== */
+
+.auth-btn {
+
+    width: 100%;
+
+    height: 54px;
+
+}
+
+/* ===========================================================
+   ANIMAÇÃO
+=========================================================== */
+
+.auth-card {
+
+    animation: slideUp .45s ease;
+
+}
+
+/* ===========================================================
+   RESPONSIVO
+=========================================================== */
+
+@media (max-width: 992px) {
+
+    .auth-container {
+
+        grid-template-columns: 1fr;
+
+        max-width: 520px;
+
+    }
+
+    .auth-banner {
+
+        display: none;
+
+    }
+
+}
+
+@media (max-width:576px) {
+
+    .auth-page {
+
+        padding: 20px;
+
+    }
+
+    .auth-form {
+
+        padding: 35px;
+
+    }
+
+}
