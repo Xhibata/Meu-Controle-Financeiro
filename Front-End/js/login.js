@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (email.includes('@') && senha.length >= 4) {
-      window.location.href = 'index.html';
+    window.location.href = 'index.html';
     } else {
       alert('Por favor, informe um e-mail válido e uma senha com pelo menos 4 caracteres.');
     }

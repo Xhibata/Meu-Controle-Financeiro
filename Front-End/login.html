@@ -77,14 +77,15 @@
                   senha: senha
                 })
               });
-          const dados =
-            await resposta.json();
+          const dados = await resposta.json();
+
           if (!resposta.ok) {
             throw new Error(
               dados.detail ||
               "Email ou senha inválidos."
             );
-          }
+          };
+
           localStorage.setItem(
             "access_token",
             dados.access_token
@@ -97,12 +98,17 @@
             "usuario_email",
             email
           );
-    window.location.href =
-      "index.html";
+          localStorage.setItem(
+            "usuario_nome",
+            dados.usuario_nome
+          );
+          window.location.href =
+            "index.html";
+
         }
         catch (erro) {
-      alert(erro.message);
-    }
+          alert(erro.message);
+        }
       });
   </script>
 </body>

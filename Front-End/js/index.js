@@ -264,8 +264,40 @@ async function carregarDashboard() {
   await carregarTransacoesRecentes();
 }
 
+async function carregarUsuario() {
+    try {
+        const token = localStorage.getItem("access_token");
+
+        if (!token) return;
+
+        const resposta = await fetch(
+            "http://localhost:8000/projeto/me",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        if (!resposta.ok) return;
+
+        const dados = await resposta.json();
+
+        localStorage.setItem(
+            "usuario_nome",
+            dados.nome
+        );
+
+        setUserName();
+
+    } catch (erro) {
+        console.error("Erro ao carregar usuário:", erro);
+    }
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   const token = getToken();
+  carregarUsuario();
 
   if (!token) {
     window.location.href = "login.html";
