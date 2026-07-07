@@ -68,7 +68,7 @@ function abrirPopup() {
 
 function fecharPopup() {
   document.getElementById("popup").style.display = "none";
-  window.location.href = "index.html";
+  window.location.href = "criardespesas.html";
 }
 
 function irParaExtrato() {
