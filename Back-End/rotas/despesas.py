@@ -22,6 +22,7 @@ roteador = APIRouter(
     "",
     status_code=201,
     response_model=DespesaResponse,
+    include_in_schema=False,
 )
 def criar_despesa(
     dados: DespesaCreate,
@@ -40,6 +41,7 @@ def criar_despesa(
 @roteador.get(
     "",
     response_model=list[DespesaResponse],
+    include_in_schema=False,
 )
 def listar_despesas(
     db: Session = Depends(get_banco),
@@ -54,6 +56,7 @@ def listar_despesas(
 @roteador.get(
     "/{despesa_id}",
     response_model=DespesaResponse,
+    include_in_schema=False,
 )
 def obter_despesa(
     despesa_id: int,
@@ -69,6 +72,7 @@ def obter_despesa(
 @roteador.put(
     "/{despesa_id}",
     response_model=DespesaResponse,
+    include_in_schema=False,
 )
 def editar_despesa(
     despesa_id: int,
@@ -85,7 +89,7 @@ def editar_despesa(
     )
 
 
-@roteador.delete("/{despesa_id}")
+@roteador.delete("/{despesa_id}", include_in_schema=False)
 def remover_despesa(
     despesa_id: int,
     db: Session = Depends(get_banco),
