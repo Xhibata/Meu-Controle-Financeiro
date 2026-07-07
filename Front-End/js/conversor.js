@@ -1,3 +1,14 @@
+function logout() {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("token_type");
+    localStorage.removeItem("usuario_email");
+    localStorage.removeItem("usuario_nome");
+
+    window.location.href = "login.html";
+}
+
+window.logout = logout;
+
 async function converter() {
     const valor = parseFloat(document.getElementById("valor").value);
     const de = document.getElementById("moedaOrigem").value;

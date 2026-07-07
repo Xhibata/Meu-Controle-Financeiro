@@ -274,6 +274,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   setUserName();
 
+  const logoutButton = document.getElementById("logoutButton");
+  if (logoutButton) {
+    logoutButton.addEventListener("click", logout);
+  }
+
   await carregarDashboard();
 });
 
