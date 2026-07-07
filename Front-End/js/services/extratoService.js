@@ -15,6 +15,10 @@ const ExtratoService = {
     return API.put(`/extrato/${id}`, dados);
   },
 
+  limpar() {
+    return API.delete("/extrato");
+  },
+
   remover(id) {
     return API.delete(`/extrato/${id}`);
   },

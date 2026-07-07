@@ -28,3 +28,12 @@ class ExtratoRepository:
     def delete(self, extrato: Extrato):
         self.db.delete(extrato)
         self.db.commit()
+
+    def limpar_extrato(self, usuario_id: int):
+        quantidade = (
+            self.db.query(Extrato).filter(Extrato.usuario_id == usuario_id).delete()
+        )
+
+        self.db.commit()
+
+        return quantidade

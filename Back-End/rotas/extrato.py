@@ -86,6 +86,20 @@ def editar_extrato(
 
 
 @roteador.delete(
+    "",
+    status_code=204,
+)
+def limpar_todos_extratos(
+    db: Session = Depends(get_banco),
+    usuario=Depends(obter_usuario_logado),
+):
+    repository = ExtratoRepository(db)
+    service = ExtratoService(repository)
+
+    return service.limpar_extrato(usuario.id)
+
+
+@roteador.delete(
     "/{extrato_id}",
     status_code=204,
 )

@@ -84,6 +84,29 @@ function carregarUsuario() {
   document.getElementById("userName").innerText = `Olá, ${usuario.nome}`;
 }
 
+async function limparExtrato() {
+
+  const confirmar = confirm(
+      "Deseja realmente remover TODAS as movimentações?"
+  );
+
+  if (!confirmar) return;
+
+  try {
+
+      await ExtratoService.limpar();
+
+      Utils.mostrarMensagem("Extrato limpo com sucesso.");
+
+      carregarExtratos();
+
+  } catch (erro) {
+
+      Utils.mostrarErro(erro.message);
+
+  }
+}
+
 function formatCurrency(valor) {
   return Number(valor).toLocaleString("pt-BR", {
     style: "currency",

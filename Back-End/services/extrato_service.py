@@ -82,3 +82,12 @@ class ExtratoService:
 
         self.repository.delete(extrato)
         return {"Extrato removido com sucesso."}
+
+    def limpar_extrato(
+        self,
+        usuario_id: int,
+    ):
+
+        quantidade = self.repository.limpar_extrato(usuario_id)
+
+        return {"message": f"{quantidade} movimentações removidas com sucesso."}

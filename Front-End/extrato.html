@@ -105,9 +105,23 @@
             <div class="col-md-8">
               <div class="card shadow">
                 <div class="card-body">
-                  <h2 class="mb-4 text-center">Extrato</h2>
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <h2 class="mb-0">Extrato</h2>
+
+                    <button
+                        class="btn btn-danger"
+                        onclick="limparExtrato()">
+
+                        <i class="fa fa-trash"></i>
+                        Limpar Extrato
+
+                    </button>
+
+                </div>
 
                   <div class="table-responsive">
+
                     <table class="table table-striped table-hover">
                       <thead class="thead-dark">
                         <tr>
@@ -115,7 +129,7 @@
                           <th>Descrição</th>
                           <th>Valor</th>
                           <th>Data</th>
-                          <th width="130">Ações</th>
+                          <th width="100">Ações</th>
                         </tr>
                       </thead>
                       <tbody id="tabelaExtratos"></tbody>
