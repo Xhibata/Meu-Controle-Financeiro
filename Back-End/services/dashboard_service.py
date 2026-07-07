@@ -66,6 +66,7 @@ class DashboardService:
 
         return [
             {
+                "id": mov.id,
                 "tipo": "Receita" if mov.tipo == "E" else "Despesa",
                 "descricao": mov.descricao,
                 "valor": mov.valor,

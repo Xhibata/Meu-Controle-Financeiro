@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 
 class DashboardExtratoResponse(BaseModel):
+    id: int
     tipo: str
     descricao: str
     valor: int
