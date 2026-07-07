@@ -1,58 +1,75 @@
 document.addEventListener("DOMContentLoaded", async () => {
-
   if (!Auth.isAuthenticated()) {
     return;
   }
 
   try {
     carregarUsuario();
-    await carregarDashboard();
-    await carregarExtrato();
+
+    const extrato = await carregarExtrato();
+
+    carregarDashboard(extrato);
   } catch (error) {
     console.error(error);
 
     if (error.status === 401) {
-        Auth.logout();
-        return;
+      Auth.logout();
+      return;
     }
 
     Utils.mostrarErro(error.message);
   }
 });
 
-async function carregarDashboard() {
-  const dashboard = await API.get("/dashboard");
+function carregarDashboard(lista) {
+
+  const entradas = lista.filter(item => item.tipo === "Receita");
+
+  const saidas = lista.filter(item => item.tipo === "Despesa");
+
+  const totalEntradas = entradas.reduce(
+      (total, item) => total + Number(item.valor),
+      0
+  );
+
+  const totalSaidas = saidas.reduce(
+      (total, item) => total + Number(item.valor),
+      0
+  );
+
+  const saldo = totalEntradas - totalSaidas;
 
   document.getElementById("saldo").innerText =
-    formatCurrency(dashboard.saldo);
+      formatCurrency(saldo);
 
   document.getElementById("totalReceitas").innerText =
-    formatCurrency(dashboard.total_receitas);
+      formatCurrency(totalEntradas);
 
   document.getElementById("totalDespesas").innerText =
-    formatCurrency(dashboard.total_despesas);
+      formatCurrency(totalSaidas);
 
   document.getElementById("qtdReceitas").innerText =
-    dashboard.quantidade_receitas;
+      entradas.length;
 
   document.getElementById("qtdDespesas").innerText =
-    dashboard.quantidade_despesas;
+      saidas.length;
 }
 
 async function carregarExtrato() {
   const lista = await API.get("/dashboard/extrato");
-
+  console.table(lista);
   const ul = document.getElementById("recentes");
 
   ul.innerHTML = "";
 
   if (!lista.length) {
     ul.innerHTML = `
-      <li class="list-group-item text-center text-muted">
-        Nenhuma movimentação encontrada.
-      </li>
-    `;
-    return;
+          <li class="list-group-item text-center text-muted">
+              Nenhuma movimentação encontrada.
+          </li>
+      `;
+
+    return [];
   }
 
   lista.forEach((item) => {
@@ -62,23 +79,25 @@ async function carregarExtrato() {
       "list-group-item d-flex justify-content-between align-items-center";
 
     li.innerHTML = `
-      <div>
-        <div class="font-weight-bold">
-          ${escapeHtml(item.tipo)} - ${escapeHtml(item.descricao)}
-        </div>
+          <div>
+              <div class="font-weight-bold">
+                  ${escapeHtml(item.tipo)} - ${escapeHtml(item.descricao)}
+              </div>
 
-        <small class="text-muted">
-          ${formatDate(item.data)}
-        </small>
-      </div>
+              <small class="text-muted">
+                  ${formatDate(item.data)}
+              </small>
+          </div>
 
-      <span class="badge badge-primary badge-pill">
-        ${formatCurrency(item.valor)}
-      </span>
-    `;
+          <span class="badge badge-primary badge-pill">
+              ${formatCurrency(item.valor)}
+          </span>
+      `;
 
     ul.appendChild(li);
   });
+
+  return lista;
 }
 
 function carregarUsuario() {
@@ -86,8 +105,7 @@ function carregarUsuario() {
 
   if (!usuario) return;
 
-  document.getElementById("userName").innerText =
-    `Olá, ${usuario.nome}`;
+  document.getElementById("userName").innerText = `Olá, ${usuario.nome}`;
 }
 
 function formatCurrency(valor) {

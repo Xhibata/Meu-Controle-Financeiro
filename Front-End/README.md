@@ -61,6 +61,7 @@ Ou seja, na próxima resposta eu entrego:
 | 7     | Responsividade                                             |
 | 8     | Animações e refinamentos
 ```
+
 ```
 Front-End
 ├─ assets
@@ -68,7 +69,6 @@ Front-End
 │  └─ vault.ico
 ├─ cadastro.html
 ├─ conversor.html
-├─ criardespesas.html
 ├─ css
 │  ├─ cadastro.css
 │  ├─ global.css
@@ -78,16 +78,19 @@ Front-End
 ├─ extrato.html
 ├─ index.html
 ├─ js
-│  ├─ api.js
-│  ├─ auth.js
-│  ├─ cadastro.js
-│  ├─ conversor.js
-│  ├─ criardespesas.js
-│  ├─ dashboard.js
-│  ├─ extrato.js
 │  ├─ index.js
-│  ├─ login.js
 │  ├─ main.js
+│  ├─ pages
+│  │  ├─ conversor.js
+│  │  ├─ criardespesas.js
+│  │  ├─ dashboard.js
+│  │  ├─ despesa.js
+│  │  └─ extrato.js
+│  ├─ services
+│  │  ├─ api.js
+│  │  ├─ auth.js
+│  │  ├─ login.js
+│  │  └─ storage.js
 │  ├─ testes
 │  │  ├─ testeAuth.js
 │  │  ├─ testeRequest.js
@@ -95,6 +98,7 @@ Front-End
 │  │  └─ testeToken.js
 │  └─ utils.js
 ├─ login.html
+├─ movimentacao.html
 ├─ pages
 └─ README.md
 
