@@ -22,37 +22,36 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 function carregarDashboard(lista) {
+  const entradas = lista.filter((item) => item.tipo === "Receita");
 
-  const entradas = lista.filter(item => item.tipo === "Receita");
-
-  const saidas = lista.filter(item => item.tipo === "Despesa");
+  const saidas = lista.filter((item) => item.tipo === "Despesa");
 
   const totalEntradas = entradas.reduce(
-      (total, item) => total + Number(item.valor),
-      0
+    (total, item) => total + Number(item.valor),
+    0
   );
 
   const totalSaidas = saidas.reduce(
-      (total, item) => total + Number(item.valor),
-      0
+    (total, item) => total + Number(item.valor),
+    0
   );
 
   const saldo = totalEntradas - totalSaidas;
 
-  document.getElementById("saldo").innerText =
-      formatCurrency(saldo);
+  document.getElementById("saldo").innerText = formatCurrency(saldo);
 
   document.getElementById("totalReceitas").innerText =
-      formatCurrency(totalEntradas);
+    formatCurrency(totalEntradas);
 
   document.getElementById("totalDespesas").innerText =
-      formatCurrency(totalSaidas);
+    formatCurrency(totalSaidas);
 
-  document.getElementById("qtdReceitas").innerText =
-      entradas.length;
+  document.getElementById("qtdReceitas").innerText = entradas.length;
 
-  document.getElementById("qtdDespesas").innerText =
-      saidas.length;
+  document.getElementById("qtdDespesas").innerText = saidas.length;
+
+  document.getElementById("totalMovimentacoes").textContent =
+    entradas.length + saidas.length;
 }
 
 async function carregarExtrato() {

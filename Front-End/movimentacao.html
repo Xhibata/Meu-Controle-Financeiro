@@ -1,197 +1,198 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cofrinho Digital</title>
-  <link rel="shortcut icon" href="assets/vault.ico" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link rel="stylesheet" href="css/global.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-  <link rel="stylesheet" href="css/sidebar.css" />
-  <link rel="stylesheet" href="css/popup.css" />
-</head>
+    <title>Nova Movimentação | Cofrinho Digital</title>
 
-<body>
-  <div class="wrapper d-flex align-items-stretch">
-    <!-- SIDEBAR -->
-    <nav id="sidebar">
-      <div class="custom-menu">
-        <button type="button" id="sidebarCollapse" class="btn btn-primary">
-          <i class="fa fa-bars" style="color: white"></i>
+    <link rel="shortcut icon" href="assets/vault.ico" />
+
+    <link rel="stylesheet" href="css/main.css" />
+
+    <link rel="stylesheet" href="css/dashboard.css" />
+
+    <link rel="stylesheet" href="css/movimentacao.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+  </head>
+
+  <body>
+    <!-- =======================
+        SIDEBAR
+    ======================== -->
+
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <i class="bi bi-wallet2"></i>
+
+        Cofrinho Digital
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="index.html" class="sidebar-link">
+          <i class="bi bi-grid-1x2-fill"></i>
+
+          Dashboard
+        </a>
+
+        <a href="movimentacao.html" class="sidebar-link active">
+          <i class="bi bi-plus-circle"></i>
+
+          Movimentações
+        </a>
+
+        <a href="extrato.html" class="sidebar-link">
+          <i class="bi bi-receipt"></i>
+
+          Extrato
+        </a>
+
+        <a href="conversor.html" class="sidebar-link">
+          <i class="bi bi-currency-exchange"></i>
+
+          Conversor
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar">JD</div>
+
+          <div>
+            <strong id="userName"> John Doe </strong>
+
+            <small> Usuário </small>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- =======================
+        CONTEÚDO
+    ======================== -->
+
+    <div class="content">
+      <!-- NAVBAR -->
+
+      <header class="navbar">
+        <div></div>
+
+        <button class="btn btn-outline" onclick="Auth.logout()">
+          <i class="bi bi-box-arrow-right"></i>
+
+          Sair
         </button>
-      </div>
+      </header>
 
-      <h1>
-        <a href="index.html" class="logo" style="padding: 30px; font-size: 24px">
-          Cofrinho Digital
-        </a>
-      </h1>
+      <!-- MAIN -->
 
-      <ul class="list-unstyled components">
-        <li>
-          <a href="index.html">
-            <span class="fa fa-home mr-3"></span>
-            Início
-          </a>
-        </li>
+      <main class="main">
+        <div class="page-header">
+          <h1>Nova movimentação</h1>
 
-        <li class="active">
-          <a href="movimentacao.html" style="font-weight: bold;">
-            <span class="fa fa-plus-circle mr-3"></span>
-            Movimentação
-          </a>
-        </li>
-
-        <li>
-          <a href="extrato.html" style="font-weight: bold;">
-            <span class="fa fa-file-text mr-3"></span>
-            Extrato
-          </a>
-        </li>
-
-        <li>
-          <a href="conversor.html" style="font-weight: bold;">
-            <span class="fa fa-dollar mr-3"></span>
-            Conversor
-          </a>
-        </li>
-      </ul>
-
-      <div style="
-            position: absolute;
-            bottom: 20px;
-            width: 100%;
-            text-align: center;
-            color: white;
-          ">
-        <a href="https://github.com/Xhibata" target="_blank" style="color: white; text-decoration: none">
-          <i class="fa fa-github mr-2"></i>
-          Devs: Enzo Paz e Erick Riquelme
-        </a>
-      </div>
-    </nav>
-
-    <!-- CONTEÚDO PRINCIPAL -->
-    <!-- CONTEÚDO PRINCIPAL -->
-    <div id="content">
-      <main class="container mt-5">
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <div id="userName" class="font-weight-bold"></div>
-
-          <button class="btn btn-outline-danger btn-sm" onclick="Auth.logout()">
-            Sair
-          </button>
+          <p>Cadastre uma nova receita ou despesa.</p>
         </div>
 
-        <div class="row justify-content-center">
-          <div class="col-md-6">
+        <div class="card movement-card">
+          <form id="formMovimentacao">
+            <!-- Tipo -->
 
-            <div class="card shadow">
-              <div class="card-body">
+            <div class="form-group">
+              <label class="form-label"> Tipo da movimentação </label>
 
-                <h2 class="mb-4 text-center">
-                  Nova Movimentação
-                </h2>
+              <select id="tipo" class="form-control" required>
+                <option value="">Selecione...</option>
 
-                <form id="formMovimentacao">
+                <option value="E">Receita</option>
 
-                  <div class="form-group">
-                    <label for="tipo">
-                      Tipo
-                    </label>
+                <option value="S">Despesa</option>
+              </select>
+            </div>
 
-                    <select id="tipo" class="form-control" required>
+            <!-- Descrição -->
 
-                      <option value="">Selecione...</option>
+            <div class="form-group">
+              <label class="form-label"> Descrição </label>
 
-                      <option value="E">
-                        Receita
-                      </option>
+              <input
+                id="descricao"
+                class="form-control"
+                type="text"
+                placeholder="Ex.: Salário, Mercado, Internet..."
+                required
+              />
+            </div>
 
-                      <option value="S">
-                        Despesa
-                      </option>
+            <!-- Linha -->
 
-                    </select>
-                  </div>
+            <div class="movement-grid">
+              <div class="form-group">
+                <label class="form-label"> Valor </label>
 
-                  <div class="form-group">
-                    <label for="descricao">
-                      Descrição
-                    </label>
+                <input
+                  id="valor"
+                  class="form-control"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  placeholder="0,00"
+                  required
+                />
+              </div>
 
-                    <input type="text" id="descricao" class="form-control" required>
-                  </div>
+              <div class="form-group">
+                <label class="form-label"> Data </label>
 
-                  <div class="form-group">
-                    <label for="valor">
-                      Valor
-                    </label>
-
-                    <div class="input-group">
-
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">
-                          R$
-                        </span>
-                      </div>
-
-                      <input type="number" id="valor" class="form-control" min="0" step="0.01" required>
-
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="data">
-                      Data
-                    </label>
-
-                    <input type="date" id="data" class="form-control">
-                  </div>
-
-                  <button type="submit" class="btn btn-primary btn-block">
-
-                    Salvar Movimentação
-
-                  </button>
-
-                </form>
-
+                <input id="data" class="form-control" type="date" />
               </div>
             </div>
 
-          </div>
-        </div>
+            <div class="movement-actions">
+              <button type="submit" class="btn btn-primary btn-lg">
+                <i class="bi bi-check-circle-fill"></i>
 
+                Salvar movimentação
+              </button>
+            </div>
+          </form>
+        </div>
       </main>
     </div>
-  </div>
-  <div id="popup" class="popup">
-    <div class="popup-content">
-      <h3>Despesa criada com sucesso!</h3>
 
-      <div class="botoes-popup">
-        <button class="btn-extrato" onclick="irParaExtrato()">Ver Extrato</button>
-        <button class="btn-fechar" onclick="fecharPopup()">Fechar</button>
+    <!-- Popup existente (mantido para não quebrar o JS atual) -->
+
+    <div id="popup" class="popup">
+      <div class="popup-content">
+        <h3>Movimentação criada com sucesso!</h3>
+
+        <div class="botoes-popup">
+          <button class="btn-extrato" onclick="irParaExtrato()">
+            Ver Extrato
+          </button>
+
+          <button class="btn-fechar" onclick="fecharPopup()">Fechar</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script src="js/utils.js"></script>
-  <script src="js/services/api.js"></script>
-  <script src="js/services/auth.js"></script>
-  <script src="js/services/extratoService.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/pages/movimentacao.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/services/api.js"></script>
+    <script src="js/services/auth.js"></script>
+    <script src="js/services/extratoService.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/pages/movimentacao.js"></script>
 
+    <script>
+      const usuario = Utils.recuperar(STORAGE.USUARIO);
 
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
-</body>
-
+      if (usuario) {
+        document.getElementById("userName").textContent = usuario.nome;
+      }
+    </script>
+  </body>
 </html>

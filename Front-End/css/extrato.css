@@ -1,0 +1,121 @@
+.extrato-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 30px;
+
+}
+
+.extrato-header h2 {
+
+    margin-bottom: 4px;
+
+}
+
+.extrato-header p {
+
+    color: var(--text-light);
+
+}
+
+.table-wrapper {
+
+    overflow-x: auto;
+
+}
+
+.extrato-table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+}
+
+.extrato-table thead {
+
+    background: var(--primary);
+
+    color: white;
+
+}
+
+.extrato-table th {
+
+    padding: 18px;
+
+    text-align: left;
+
+}
+
+.extrato-table td {
+
+    padding: 18px;
+
+    border-bottom: 1px solid #e5e7eb;
+
+}
+
+.extrato-table tbody tr {
+
+    transition: .25s;
+
+}
+
+.extrato-table tbody tr:hover {
+
+    background: #f8fafc;
+
+}
+
+.badge-tipo {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 6px 14px;
+
+    border-radius: 999px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+.badge-receita {
+
+    background: #dcfce7;
+
+    color: #15803d;
+
+}
+
+.badge-despesa {
+
+    background: #fee2e2;
+
+    color: #b91c1c;
+
+}
+
+@media(max-width:768px) {
+
+    .extrato-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 20px;
+
+    }
+
+}

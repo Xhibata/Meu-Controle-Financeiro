@@ -18,7 +18,27 @@ async function carregarExtratos() {
             <tr>
 
                 <td>
-                    ${item.tipo === "E" ? "Receita" : "Despesa"}
+                ${
+                  item.tipo === "E"
+                    ? `
+                  <span class="badge-tipo badge-receita">
+
+                      <i class="bi bi-arrow-down-circle-fill"></i>
+
+                      Receita
+
+                  </span>
+                  `
+                    : `
+                  <span class="badge-tipo badge-despesa">
+
+                      <i class="bi bi-arrow-up-circle-fill"></i>
+
+                      Despesa
+
+                  </span>
+                  `
+                }
                 </td>
 
                 <td>
@@ -85,25 +105,18 @@ function carregarUsuario() {
 }
 
 async function limparExtrato() {
-
-  const confirmar = confirm(
-      "Deseja realmente remover TODAS as movimentações?"
-  );
+  const confirmar = confirm("Deseja realmente remover TODAS as movimentações?");
 
   if (!confirmar) return;
 
   try {
+    await ExtratoService.limpar();
 
-      await ExtratoService.limpar();
+    Utils.mostrarMensagem("Extrato limpo com sucesso.");
 
-      Utils.mostrarMensagem("Extrato limpo com sucesso.");
-
-      carregarExtratos();
-
+    carregarExtratos();
   } catch (erro) {
-
-      Utils.mostrarErro(erro.message);
-
+    Utils.mostrarErro(erro.message);
   }
 }
 

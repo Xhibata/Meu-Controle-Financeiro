@@ -9,12 +9,11 @@
 document.addEventListener("DOMContentLoaded", inicializarPagina);
 
 function inicializarPagina() {
-
   const mensagem = sessionStorage.getItem("mensagem");
 
   if (mensagem) {
-      Utils.mostrarMensagem(mensagem);
-      sessionStorage.removeItem("mensagem");
+    Utils.mostrarMensagem(mensagem);
+    sessionStorage.removeItem("mensagem");
   }
 
   const formulario = document.getElementById("formLogin");

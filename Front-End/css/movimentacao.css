@@ -1,0 +1,320 @@
+/* ==========================================
+   CABEÇALHO
+========================================== */
+
+.page-header {
+    max-width: 360px;
+    /* mesma largura do card */
+    margin: 0 auto 32px;
+    margin-bottom: 32px;
+
+}
+
+.page-header h1 {
+
+    margin-bottom: 8px;
+
+}
+
+.page-header p {
+
+    color: var(--text-light);
+
+}
+
+/* ==========================================
+   CARD
+========================================== */
+
+.movement-card {
+
+    max-width: 900px;
+
+    margin: auto;
+
+    padding: 36px;
+
+}
+
+/* ==========================================
+   FORM
+========================================== */
+
+#formMovimentacao {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 22px;
+
+}
+
+/* ==========================================
+   LINHAS
+========================================== */
+
+.movement-grid {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 24px;
+
+}
+
+/* ==========================================
+   BOTÃO
+========================================== */
+
+.movement-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-top: 10px;
+
+}
+
+.movement-actions .btn {
+
+    min-width: 240px;
+
+}
+
+/* ==========================================
+   INPUTS
+========================================== */
+
+#formMovimentacao input,
+#formMovimentacao select {
+
+    height: 54px;
+
+}
+
+/* ==========================================
+   PLACEHOLDER
+========================================== */
+
+#formMovimentacao input::placeholder {
+
+    color: #94a3b8;
+
+}
+
+/* ==========================================
+   POPUP
+========================================== */
+
+.popup {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(15, 23, 42, .45);
+
+    display: none;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 9999;
+
+}
+
+.popup.active {
+
+    display: flex;
+
+}
+
+.popup-content {
+
+    width: 420px;
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    box-shadow: var(--shadow-lg);
+
+    animation: fade .25s ease;
+
+}
+
+.popup-content h3 {
+
+    margin-bottom: 24px;
+
+}
+
+.botoes-popup {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 16px;
+
+}
+
+.btn-extrato {
+
+    background: var(--primary);
+
+    color: white;
+
+    padding: 12px 18px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+
+}
+
+.btn-fechar {
+
+    background: #f1f5f9;
+
+    color: var(--text);
+
+    padding: 12px 18px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+}
+
+.btn-extrato:hover {
+
+    background: var(--primary-dark);
+
+}
+
+.btn-fechar:hover {
+
+    background: #e2e8f0;
+
+}
+
+/* ==========================================
+   RESPONSIVO
+========================================== */
+
+@media(max-width:768px) {
+
+    .movement-card {
+
+        padding: 24px;
+
+    }
+
+    .movement-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 0;
+
+    }
+
+    .movement-actions {
+
+        justify-content: stretch;
+
+    }
+
+    .movement-actions .btn {
+
+        width: 100%;
+
+    }
+
+    /* ===============================
+   TIPO
+=============================== */
+
+    .tipo-selector {
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 18px;
+
+    }
+
+    .tipo-card {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 18px;
+
+        padding: 22px;
+
+        border: 2px solid #dbeafe;
+
+        border-radius: 18px;
+
+        cursor: pointer;
+
+        transition: all .25s;
+
+        background: white;
+
+    }
+
+    .tipo-card:hover {
+
+        transform: translateY(-3px);
+
+        box-shadow: var(--shadow-md);
+
+    }
+
+    .tipo-card i {
+
+        font-size: 34px;
+
+        color: var(--primary);
+
+    }
+
+    .tipo-card strong {
+
+        display: block;
+
+    }
+
+    .tipo-card small {
+
+        color: var(--text-light);
+
+    }
+
+    .tipo-card.active {
+
+        border-color: var(--primary);
+
+        background: #eff6ff;
+
+    }
+
+}

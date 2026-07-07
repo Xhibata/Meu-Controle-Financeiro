@@ -11,10 +11,16 @@ async function inicializar() {
     .addEventListener("submit", salvarMovimentacao);
 
   if (idMovimentacao) {
-    document.querySelector("h2").innerText = "Editar Movimentação";
+    document.querySelector(".page-header h1").textContent =
+      "Editar movimentação";
 
-    document.querySelector("button[type='submit']").innerText =
-      "Salvar Alterações";
+    document.querySelector(".page-header p").textContent =
+      "Altere os dados da movimentação.";
+
+    document.querySelector("button[type='submit']").innerHTML = `
+          <i class="bi bi-check-circle-fill"></i>
+          Salvar alterações
+      `;
 
     await carregarMovimentacao(idMovimentacao);
   }
