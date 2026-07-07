@@ -1,32 +1,50 @@
 from sqlalchemy import func
 
-from models import Despesa, Extrato
+from models import Extrato
 
 
 class DashboardService:
     def __init__(self, db):
         self.db = db
 
+    from sqlalchemy import func
+
     def resumo(self, usuario_id: int):
 
         total_receitas = (
             self.db.query(func.coalesce(func.sum(Extrato.valor), 0))
-            .filter(Extrato.usuario_id == usuario_id)
+            .filter(
+                Extrato.usuario_id == usuario_id,
+                Extrato.tipo == "E",
+            )
             .scalar()
         )
 
         total_despesas = (
-            self.db.query(func.coalesce(func.sum(Despesa.valor), 0))
-            .filter(Despesa.usuario_id == usuario_id)
+            self.db.query(func.coalesce(func.sum(Extrato.valor), 0))
+            .filter(
+                Extrato.usuario_id == usuario_id,
+                Extrato.tipo == "S",
+            )
             .scalar()
         )
 
         quantidade_receitas = (
-            self.db.query(Extrato).filter(Extrato.usuario_id == usuario_id).count()
+            self.db.query(Extrato)
+            .filter(
+                Extrato.usuario_id == usuario_id,
+                Extrato.tipo == "E",
+            )
+            .count()
         )
 
         quantidade_despesas = (
-            self.db.query(Despesa).filter(Despesa.usuario_id == usuario_id).count()
+            self.db.query(Extrato)
+            .filter(
+                Extrato.usuario_id == usuario_id,
+                Extrato.tipo == "S",
+            )
+            .count()
         )
 
         return {
@@ -39,35 +57,19 @@ class DashboardService:
 
     def extrato(self, usuario_id: int):
 
-        receitas = self.db.query(Extrato).filter(Extrato.usuario_id == usuario_id).all()
-
-        despesas = self.db.query(Despesa).filter(Despesa.usuario_id == usuario_id).all()
-
-        movimentos = []
-
-        for receita in receitas:
-            movimentos.append(
-                {
-                    "tipo": "Receita",
-                    "descricao": receita.descricao,
-                    "valor": receita.valor,
-                    "data": receita.data,
-                }
-            )
-
-        for despesa in despesas:
-            movimentos.append(
-                {
-                    "tipo": "Despesa",
-                    "descricao": despesa.descricao,
-                    "valor": despesa.valor,
-                    "data": despesa.data,
-                }
-            )
-
-        movimentos.sort(
-            key=lambda x: x["data"],
-            reverse=True,
+        movimentos = (
+            self.db.query(Extrato)
+            .filter(Extrato.usuario_id == usuario_id)
+            .order_by(Extrato.data.desc())
+            .all()
         )
 
-        return movimentos
+        return [
+            {
+                "tipo": "Receita" if mov.tipo == "E" else "Despesa",
+                "descricao": mov.descricao,
+                "valor": mov.valor,
+                "data": mov.data,
+            }
+            for mov in movimentos
+        ]
