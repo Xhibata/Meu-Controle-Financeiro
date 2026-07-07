@@ -1,116 +1,145 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cofrinho Digital</title>
+    <link rel="shortcut icon" href="assets/vault.ico" type="image/x-icon" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cofrinho Digital</title>
-  <link rel="shortcut icon" href="assets/vault.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="css/sidebar.css" />
+  </head>
 
-  <link rel="stylesheet" href="css/global.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-  <link rel="stylesheet" href="css/sidebar.css" />
-</head>
+  <body>
+    <div class="wrapper d-flex align-items-stretch">
+      <!-- SIDEBAR -->
+      <nav id="sidebar">
+        <div class="custom-menu">
+          <button type="button" id="sidebarCollapse" class="btn btn-primary">
+            <i class="fa fa-bars" style="color: white"></i>
+          </button>
+        </div>
 
-<body>
-  <div class="wrapper d-flex align-items-stretch">
-    <!-- SIDEBAR -->
-    <nav id="sidebar">
-      <div class="custom-menu">
-        <button type="button" id="sidebarCollapse" class="btn btn-primary">
-          <i class="fa fa-bars" style="color: white"></i>
-        </button>
-      </div>
-
-      <h1>
-        <a href="index.html" class="logo" style="padding: 30px; font-size: 24px">
-          Cofrinho Digital
-        </a>
-      </h1>
-
-      <ul class="list-unstyled components">
-        <li>
-          <a href="index.html">
-            <span class="fa fa-home mr-3"></span>
-            Início
+        <h1>
+          <a
+            href="index.html"
+            class="logo"
+            style="padding: 30px; font-size: 24px"
+          >
+            Cofrinho Digital
           </a>
-        </li>
+        </h1>
 
-        <li>
-          <a href="movimentacao.html">
+        <ul class="list-unstyled components">
+          <li>
+            <a href="index.html">
+              <span class="fa fa-home mr-3"></span>
+              Início
+            </a>
+          </li>
+
+          <li>
+            <a href="movimentacao.html">
               <span class="fa fa-plus-circle mr-3"></span>
               Movimentação
-          </a>
-        </li>
+            </a>
+          </li>
 
-        <li class="active">
-          <a href="extrato.html" style="font-weight: bold;">
-            <span class="fa fa-file-text mr-3"></span>
-            Extrato
-          </a>
-        </li>
+          <li class="active">
+            <a href="extrato.html" style="font-weight: bold">
+              <span class="fa fa-file-text mr-3"></span>
+              Extrato
+            </a>
+          </li>
 
-        <li>
-          <a href="conversor.html">
-            <span class="fa fa-dollar mr-3"></span>
-            Conversor
-          </a>
-        </li>
-      </ul>
+          <li>
+            <a href="conversor.html">
+              <span class="fa fa-dollar mr-3"></span>
+              Conversor
+            </a>
+          </li>
+        </ul>
 
-      <div style="
+        <div
+          style="
             position: absolute;
             bottom: 20px;
             width: 100%;
             text-align: center;
             color: white;
-          ">
-        <a href="https://github.com/Xhibata" target="_blank" style="color: white; text-decoration: none">
-          <i class="fa fa-github mr-2"></i>
-          Desenvolvido por @Xhibata
-        </a>
-      </div>
-    </nav>
-
-    <!-- CONTEÚDO PRINCIPAL -->
-    <div id="content">
-      <main class="container mt-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <div id="userName" class="font-weight-bold"></div>
-          <button class="btn btn-outline-danger btn-sm" onclick="Auth.logout()">Sair</button>
+          "
+        >
+          <a
+            href="https://github.com/Xhibata"
+            target="_blank"
+            style="color: white; text-decoration: none"
+          >
+            <i class="fa fa-github mr-2"></i>
+            Devs: Enzo Paz e Erick Riquelme
+          </a>
         </div>
+      </nav>
 
-        <div class="row justify-content-center">
-          <div class="col-md-8">
-            <div class="card shadow">
-              <div class="card-body">
-                <h2 class="mb-4 text-center">Extrato</h2>
+      <!-- CONTEÚDO PRINCIPAL -->
+      <div id="content">
+        <main class="container mt-5">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div id="userName" class="font-weight-bold"></div>
+            <button
+              class="btn btn-outline-danger btn-sm"
+              onclick="Auth.logout()"
+            >
+              Sair
+            </button>
+          </div>
 
-                <h4 id="saldoAtual" class="mb-4 text-success text-center">
-                  Saldo Atual R$ 0,00
-                </h4>
+          <div class="row justify-content-center">
+            <div class="col-md-8">
+              <div class="card shadow">
+                <div class="card-body">
+                  <h2 class="mb-4 text-center">Extrato</h2>
 
-                <h4 id="saldo" class="mb-4 text-danger text-center">
-                  Total gasto R$ 0,00
-                </h4>
-
-                <ul id="lista" class="list-group"></ul>
+                  <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th>Tipo</th>
+                          <th>Descrição</th>
+                          <th>Valor</th>
+                          <th>Data</th>
+                          <th width="130">Ações</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tabelaExtratos"></tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
-  </div>
 
-  <script src="js/services/auth.js"></script>
-  <!-- <script src="js/pages/extrato.js"></script> -->
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
-  <script src="js/utils.js"></script>
-  <script src="js/main.js"></script>
-</body>
+    <script src="js/utils.js"></script>
 
+    <script src="js/services/api.js"></script>
+    <script src="js/services/auth.js"></script>
+    <script src="js/services/extratoService.js"></script>
+
+    <script src="js/main.js"></script>
+    <script src="js/pages/extrato.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+  </body>
 </html>

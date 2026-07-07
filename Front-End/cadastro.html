@@ -92,10 +92,10 @@
         });
 
 
-        console.log(resposta)
+        // console.log(resposta)
         // 1. CORREÇÃO DO ERRO DE DIGITAÇÃO: Mudou de reply.json() para resposta.json()
         const resultado = await resposta.json();
-        console.log(resultado)
+        // console.log(resultado)
 
         if (resposta.status == 201) {
           alert(`Usuário cadastrado com sucesso! ID do usuário: ${resultado.id}`);

@@ -1,13 +1,37 @@
+const params = new URLSearchParams(window.location.search);
+const idMovimentacao = params.get("id");
+
 document.addEventListener("DOMContentLoaded", inicializar);
 
-function inicializar() {
+async function inicializar() {
+  carregarUsuario();
 
-    document.getElementById("userName").innerText =
-        `Olá, ${Auth.getNomeUsuario()}`;
+  document
+    .getElementById("formMovimentacao")
+    .addEventListener("submit", salvarMovimentacao);
 
-    document
-        .getElementById("formMovimentacao")
-        .addEventListener("submit", salvarMovimentacao);
+  if (idMovimentacao) {
+    document.querySelector("h2").innerText = "Editar Movimentação";
+
+    document.querySelector("button[type='submit']").innerText =
+      "Salvar Alterações";
+
+    await carregarMovimentacao(idMovimentacao);
+  }
+}
+
+async function obterSaldoAtual() {
+  const extratos = await ExtratoService.listar();
+
+  const entradas = extratos
+    .filter((item) => item.tipo === "E")
+    .reduce((total, item) => total + Number(item.valor), 0);
+
+  const saidas = extratos
+    .filter((item) => item.tipo === "S")
+    .reduce((total, item) => total + Number(item.valor), 0);
+
+  return entradas - saidas;
 }
 
 async function salvarMovimentacao(event) {
@@ -15,21 +39,64 @@ async function salvarMovimentacao(event) {
 
   const movimentacao = {
     descricao: document.getElementById("descricao").value.trim(),
-
     valor: Number(document.getElementById("valor").value),
-
     tipo: document.getElementById("tipo").value,
-
-    data: document.getElementById("data").value || null,
+    data: document.getElementById("data").value,
   };
 
+  let saldoAtual = await obterSaldoAtual();
+
+  // Se estiver editando uma movimentação existente
+  if (idMovimentacao) {
+    const registroAtual = await ExtratoService.buscar(idMovimentacao);
+
+    // Se o registro antigo era uma despesa, devolve seu valor ao saldo
+    if (registroAtual.tipo === "S") {
+      saldoAtual += Number(registroAtual.valor);
+    }
+  }
+
+  if (movimentacao.tipo === "S" && movimentacao.valor > saldoAtual) {
+    Utils.mostrarErro("Saldo insuficiente para realizar esta movimentação.");
+    return;
+  }
+
   try {
-    await ExtratoService.criar(movimentacao);
+    if (idMovimentacao) {
+      await ExtratoService.editar(idMovimentacao, movimentacao);
 
-    Utils.mostrarMensagem("Movimentação cadastrada com sucesso.");
+      Utils.mostrarMensagem("Movimentação atualizada com sucesso!");
+    } else {
+      await ExtratoService.criar(movimentacao);
 
-    document.getElementById("formMovimentacao").reset();
+      Utils.mostrarMensagem("Movimentação cadastrada com sucesso!");
+    }
+
+    window.location.href = "extrato.html";
   } catch (erro) {
     Utils.mostrarErro(erro.message);
   }
+}
+
+async function carregarMovimentacao(id) {
+  try {
+    const mov = await ExtratoService.buscar(id);
+
+    document.getElementById("descricao").value = mov.descricao;
+    document.getElementById("valor").value = mov.valor;
+    document.getElementById("tipo").value = mov.tipo;
+    document.getElementById("data").value = mov.data;
+  } catch (erro) {
+    Utils.mostrarErro(erro.message);
+
+    window.location.href = "extrato.html";
+  }
+}
+
+function carregarUsuario() {
+  const usuario = Auth.getUsuario();
+
+  if (!usuario) return;
+
+  document.getElementById("userName").innerText = `Olá, ${usuario.nome}`;
 }

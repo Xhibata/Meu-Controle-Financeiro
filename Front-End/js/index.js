@@ -57,7 +57,6 @@ function carregarDashboard(lista) {
 
 async function carregarExtrato() {
   const lista = await API.get("/dashboard/extrato");
-  console.table(lista);
   const ul = document.getElementById("recentes");
 
   ul.innerHTML = "";
