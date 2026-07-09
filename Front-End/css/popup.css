@@ -10,6 +10,7 @@
     border-bottom: none !important;
     justify-content: center;
     position: relative;
+    
 }
 
 .popup-saldo .modal-title {
@@ -17,12 +18,14 @@
     font-weight: bold;
     text-align: center;
     width: 100%;
+    
 }
 
 .popup-saldo .close {
     position: absolute;
     right: 20px;
     top: 15px;
+
 }
 
 .popup-saldo .modal-footer {
@@ -32,10 +35,14 @@
     gap: 15px;
 }
 
-.input-saldo {
+.input-saldo,
+.input-saldo:focus,
+.input-saldo::placeholder {
     height: 50px !important;
     border-radius: 10px !important;
     font-size: 18px !important;
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
 }
 
 .btn-extrato,
@@ -82,7 +89,7 @@
 }
 
 .popup-content {
-    background: white;
+    background: rgb(255, 255, 255);
     padding: 35px;
     border-radius: 15px;
     text-align: center;
