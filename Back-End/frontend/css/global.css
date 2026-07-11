@@ -1,0 +1,183 @@
+html {
+    background-color: #0f0f1a !important;
+}
+
+body {
+    height: 100%;
+    background-image: url('../assets/rm378-05.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    background-color: #0f0f1a !important;
+    min-height: 100vh;
+    animation: fadeIn 0.3s ease-in-out;
+    font-family: "Press Start 2P", system-ui;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Garante transparência na estrutura da sidebar */
+.wrapper,
+#content,
+#sidebar {
+    background-color: transparent !important;
+}
+
+#content .card {
+    background-color: #fff !important;
+    border: 1px solid rgba(0,0,0,.125) !important;
+    border-radius: 0.25rem !important;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff !important;
+    border: 8px solid rgba(0,0,0,.125) !important;
+    border-radius: 0.5rem !important;
+}
+
+#content .card.shadow {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+#content .card-body {
+    background-color: #fff !important;
+    color: #212529 !important;
+}
+
+#content .form-control {
+    background-color: #fff !important;
+    color: #495057 !important;
+    border: 1px solid #ced4da !important;
+}
+
+#content .input-group-text {
+    background-color: #e9ecef !important;
+    border: 1px solid #ced4da !important;
+    color: #495057 !important;
+}
+
+/* ESPAÇAMENTO DO TOPO PARA NÃO SOBREPOR O BOTÃO DA SIDEBAR */
+#content main {
+    padding-top: 60px !important;
+}
+
+/* Painel principal */
+#content {
+    background: transparent !important;
+}
+
+#content .card {
+    border-radius: 16px !important;
+    border: none !important;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12) !important;
+    overflow: hidden !important;
+}
+
+#content .card-body {
+    background: #ffffff !important;
+    color: #1f2937 !important;
+    padding: 2rem !important;
+    border-radius: 0 0 16px 16px;
+}
+
+#content .card.shadow-sm .card-body,
+#content > main .row .col-12 > .card > .card-body {
+    border-radius: 0 0 16px 16px;
+}
+
+#content .card.shadow-sm {
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12) !important;
+}
+
+#content .card .h4,
+#content .card .font-weight-bold,
+#content .card .small {
+    color: #2c3e50 !important;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.metric-cell {
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem 1.25rem;
+    border-bottom: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    background: #ffffff;
+}
+
+.metric-cell:nth-child(2),
+.metric-cell:nth-child(4) {
+    border-right: none;
+}
+
+.metric-cell:nth-child(3),
+.metric-cell:nth-child(4) {
+    border-bottom: none;
+}
+
+.metric-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.metric-value {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: #111827;
+}
+
+.card-stat {
+    border-radius: 16px;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+@media (max-width: 768px) {
+    #content main {
+        padding-top: 70px !important;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, minmax(0, 1fr));
+    }
+
+    .metric-cell {
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .metric-cell:nth-child(4) {
+        border-bottom: none;
+    }
+}
+
+@media (max-width: 768px) {
+    body.sidebar-open::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9998;
+    }
+}
