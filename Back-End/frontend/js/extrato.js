@@ -1,5 +1,5 @@
-const API_URL = "http://localhost:8000/extrato";
-const DESPESAS_URL = "http://localhost:8000/despesas";
+const API_URL = "http://54.163.99.76:8000/extrato";
+const DESPESAS_URL = "http://54.163.99.76:8000/despesas";
 
 const lista = document.getElementById("lista");
 const saldoAtual = document.getElementById("saldoAtual");
@@ -48,9 +48,18 @@ function normalizeLancamentos(dados) {
   return dados.map((item) => ({
     id: item.id,
     tipo: item.tipo || item.tipo_transacao || item.classificacao || "Despesa",
-    descricao: item.descricao || item.descricao_lancamento || item.nome || "Sem descrição",
+    descricao:
+      item.descricao ||
+      item.descricao_lancamento ||
+      item.nome ||
+      "Sem descrição",
     valor: Number(item.valor ?? item.valor_total ?? 0),
-    data: item.data || item.data_lancamento || item.created_at || item.data_criacao || null,
+    data:
+      item.data ||
+      item.data_lancamento ||
+      item.created_at ||
+      item.data_criacao ||
+      null,
     source: item.source || "extrato",
   }));
 }
@@ -75,16 +84,23 @@ function renderExtrato(dados) {
 
   lancamentos.forEach((item) => {
     const li = document.createElement("li");
-    li.className = "list-group-item d-flex justify-content-between align-items-center flex-wrap gap-2";
+    li.className =
+      "list-group-item d-flex justify-content-between align-items-center flex-wrap gap-2";
 
     const tipo = item.tipo === "Receita" ? "text-success" : "text-danger";
-    const dataTexto = item.data ? new Date(item.data).toLocaleDateString("pt-BR") : "Sem data";
+    const dataTexto = item.data
+      ? new Date(item.data).toLocaleDateString("pt-BR")
+      : "Sem data";
     const tipoItem = item.tipo || "Despesa";
     const podeEditar = Number.isInteger(item.id);
     const botoesAcoes = podeEditar
       ? `
-        <button class="btn btn-warning btn-sm" onclick="editarExtrato(${item.id}, '${item.source || 'extrato'}')">Editar</button>
-        <button class="btn btn-danger btn-sm" onclick="excluirExtrato(${item.id}, '${item.source || 'extrato'}')">Excluir</button>
+        <button class="btn btn-warning btn-sm" onclick="editarExtrato(${
+          item.id
+        }, '${item.source || "extrato"}')">Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="excluirExtrato(${
+          item.id
+        }, '${item.source || "extrato"}')">Excluir</button>
       `
       : "";
 
@@ -111,8 +127,12 @@ function renderExtrato(dados) {
   });
 
   if (saldoAtual) {
-    saldoAtual.innerHTML = `Saldo Atual ${formatCurrency(totalReceitas - totalDespesas)}`;
-    saldoAtual.className = `mb-0 ${totalReceitas - totalDespesas >= 0 ? "text-success" : "text-danger"}`;
+    saldoAtual.innerHTML = `Saldo Atual ${formatCurrency(
+      totalReceitas - totalDespesas
+    )}`;
+    saldoAtual.className = `mb-0 ${
+      totalReceitas - totalDespesas >= 0 ? "text-success" : "text-danger"
+    }`;
   }
 
   if (saldo) {
@@ -174,7 +194,6 @@ async function listarExtrato() {
     }
 
     renderExtrato(lancamentos);
-
   } catch (erro) {
     console.error(erro);
 
@@ -186,7 +205,8 @@ async function listarExtrato() {
 }
 
 async function editarExtrato(id, source = "extrato") {
-  const endpoint = source === "despesa" ? `${DESPESAS_URL}/${id}` : `${API_URL}/${id}`;
+  const endpoint =
+    source === "despesa" ? `${DESPESAS_URL}/${id}` : `${API_URL}/${id}`;
 
   try {
     const response = await fetch(endpoint, {
@@ -205,16 +225,17 @@ async function editarExtrato(id, source = "extrato") {
       return;
     }
 
-    const body = source === "despesa"
-      ? {
-        descricao: novaDescricao,
-        valor: Math.round(Number(novoValor) * 100),
-      }
-      : {
-        descricao: novaDescricao,
-        valor: Math.round(Number(novoValor) * 100),
-        tipo: item.tipo || "Despesa",
-      };
+    const body =
+      source === "despesa"
+        ? {
+            descricao: novaDescricao,
+            valor: Math.round(Number(novoValor) * 100),
+          }
+        : {
+            descricao: novaDescricao,
+            valor: Math.round(Number(novoValor) * 100),
+            tipo: item.tipo || "Despesa",
+          };
 
     await fetch(endpoint, {
       method: "PUT",
@@ -235,7 +256,8 @@ async function editarExtrato(id, source = "extrato") {
 async function excluirExtrato(id, source = "extrato") {
   if (!confirm("Deseja excluir este registro?")) return;
 
-  const endpoint = source === "despesa" ? `${DESPESAS_URL}/${id}` : `${API_URL}/${id}`;
+  const endpoint =
+    source === "despesa" ? `${DESPESAS_URL}/${id}` : `${API_URL}/${id}`;
 
   try {
     await fetch(endpoint, {

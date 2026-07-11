@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000/despesas";
+const API_URL = "http://54.163.99.76:8000/despesas";
 
 function getToken() {
   return localStorage.getItem("access_token");
@@ -7,7 +7,7 @@ function getToken() {
 function getAuthHeaders() {
   return {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${getToken()}`,
+    Authorization: `Bearer ${getToken()}`,
   };
 }
 
@@ -50,7 +50,9 @@ async function criarDespesa(event) {
     const dados = await resposta.json().catch(() => ({}));
 
     if (!resposta.ok) {
-      throw new Error(dados?.detail?.mensagem || "Erro ao salvar despesa no servidor.");
+      throw new Error(
+        dados?.detail?.mensagem || "Erro ao salvar despesa no servidor."
+      );
     }
 
     document.getElementById("nome").value = "";

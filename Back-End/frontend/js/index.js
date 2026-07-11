@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8000";
+const API_BASE = "http://54.163.99.76:8000";
 
 function getToken() {
   return localStorage.getItem("access_token");
@@ -30,29 +30,13 @@ function formatDate(d) {
   }
 }
 function setUserName() {
+  const userNameEl = document.getElementById("userName");
 
-  const userNameEl =
-    document.getElementById("userName");
-
-  const nome =
-    localStorage.getItem("usuario_nome");
+  const nome = localStorage.getItem("usuario_nome");
 
   if (userNameEl) {
-
-    userNameEl.textContent =
-
-      nome
-
-        ?
-
-        `Olá, ${nome}`
-
-        :
-
-        "Olá, usuário";
-
+    userNameEl.textContent = nome ? `Olá, ${nome}` : "Olá, usuário";
   }
-
 }
 
 function normalizeTransacoes(payload) {
@@ -95,14 +79,23 @@ function renderTransacoes(lista) {
   }
 
   transacoes.forEach((item) => {
-    const tipo = item.tipo || item.tipo_transacao || item.classificacao || "Movimento";
-    const descricao = item.descricao || item.descricao_lancamento || item.nome || "Sem descrição";
+    const tipo =
+      item.tipo || item.tipo_transacao || item.classificacao || "Movimento";
+    const descricao =
+      item.descricao ||
+      item.descricao_lancamento ||
+      item.nome ||
+      "Sem descrição";
     const valor = Number(item.valor ?? item.valor_total ?? 0);
-    const dataTexto = item.data || item.data_lancamento || item.created_at || item.data_criacao;
-    const badgeClass = /receita|entrada|credit/i.test(String(tipo)) ? "badge-success" : "badge-danger";
+    const dataTexto =
+      item.data || item.data_lancamento || item.created_at || item.data_criacao;
+    const badgeClass = /receita|entrada|credit/i.test(String(tipo))
+      ? "badge-success"
+      : "badge-danger";
 
     const li = document.createElement("li");
-    li.className = "list-group-item d-flex justify-content-between align-items-center flex-wrap gap-2";
+    li.className =
+      "list-group-item d-flex justify-content-between align-items-center flex-wrap gap-2";
 
     li.innerHTML = `
       <div>
@@ -117,14 +110,12 @@ function renderTransacoes(lista) {
 }
 
 function logout() {
-
   localStorage.removeItem("access_token");
   localStorage.removeItem("token_type");
   localStorage.removeItem("usuario_email");
   localStorage.removeItem("usuario_nome");
 
   window.location.href = "login.html";
-
 }
 
 async function adicionarSaldo() {
@@ -149,7 +140,9 @@ async function adicionarSaldo() {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData?.detail?.mensagem || "Não foi possível adicionar o saldo.");
+      throw new Error(
+        errorData?.detail?.mensagem || "Não foi possível adicionar o saldo."
+      );
     }
 
     valorInput.value = "";
@@ -201,7 +194,6 @@ async function carregarTransacoesRecentes() {
     }
 
     renderTransacoes(transacoes);
-
   } catch (erro) {
     console.error(erro);
 
@@ -236,7 +228,9 @@ async function carregarDashboard() {
 
     if (saldoEl) {
       saldoEl.textContent = formatCurrency(dashboardData.saldo);
-      saldoEl.className = `display-4 mb-0 ${dashboardData.saldo >= 0 ? "text-success" : "text-danger"}`;
+      saldoEl.className = `display-4 mb-0 ${
+        dashboardData.saldo >= 0 ? "text-success" : "text-danger"
+      }`;
     }
 
     if (receitasEl) {
@@ -265,34 +259,27 @@ async function carregarDashboard() {
 }
 
 async function carregarUsuario() {
-    try {
-        const token = localStorage.getItem("access_token");
+  try {
+    const token = localStorage.getItem("access_token");
 
-        if (!token) return;
+    if (!token) return;
 
-        const resposta = await fetch(
-            "http://localhost:8000/projeto/me",
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-        );
+    const resposta = await fetch("http://54.163.99.76:8000/projeto/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-        if (!resposta.ok) return;
+    if (!resposta.ok) return;
 
-        const dados = await resposta.json();
+    const dados = await resposta.json();
 
-        localStorage.setItem(
-            "usuario_nome",
-            dados.nome
-        );
+    localStorage.setItem("usuario_nome", dados.nome);
 
-        setUserName();
-
-    } catch (erro) {
-        console.error("Erro ao carregar usuário:", erro);
-    }
+    setUserName();
+  } catch (erro) {
+    console.error("Erro ao carregar usuário:", erro);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {

@@ -1,116 +1,111 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Cofrinho Digital</title>
+    <link rel="shortcut icon" href="assets/vault.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/cadastro.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Cofrinho Digital</title>
-  <link rel="shortcut icon" href="assets/vault.ico" type="image/x-icon">
-  <link rel="stylesheet" href="css/global.css">
-  <link rel="stylesheet" href="css/cadastro.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
-
-<body>
-  <div class="container login-page d-flex justify-content-center align-items-center">
-    <div class="col-12 col-sm-10 col-md-7 col-lg-5">
-      <div class="login-card">
-        <div class="login-icon">
-          <i class="fa fa-user"></i>
-        </div>
-        <h2 class="text-center login-title">
-          Entrar
-        </h2>
-        <p class="text-center login-subtitle">
-          Faça login para acessar seu Cofrinho Digital
-        </p>
-        <form id="login-form">
-          <div class="form-group">
-            <label>Email</label>
-            <input id="loginUsername" type="email" class="form-control" placeholder="Digite seu email" required>
+  <body>
+    <div
+      class="container login-page d-flex justify-content-center align-items-center"
+    >
+      <div class="col-12 col-sm-10 col-md-7 col-lg-5">
+        <div class="login-card">
+          <div class="login-icon">
+            <i class="fa fa-user"></i>
           </div>
-          <div class="form-group">
-            <label>Senha</label>
-            <input id="loginPassword" type="password" class="form-control" placeholder="Digite sua senha" required>
+          <h2 class="text-center login-title">Entrar</h2>
+          <p class="text-center login-subtitle">
+            Faça login para acessar seu Cofrinho Digital
+          </p>
+          <form id="login-form">
+            <div class="form-group">
+              <label>Email</label>
+              <input
+                id="loginUsername"
+                type="email"
+                class="form-control"
+                placeholder="Digite seu email"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label>Senha</label>
+              <input
+                id="loginPassword"
+                type="password"
+                class="form-control"
+                placeholder="Digite sua senha"
+                required
+              />
+            </div>
+            <div class="form-check">
+              <input
+                id="loginRemember"
+                class="form-check-input"
+                type="checkbox"
+              />
+              <label class="form-check-label" for="loginRemember">
+                Continuar conectado
+              </label>
+            </div>
+            <button class="btn btn-login" type="submit">Entrar</button>
+          </form>
+          <div class="login-links">
+            <a href="cadastro.html"> Criar conta </a>
+            <a href="#"> Esqueci minha senha </a>
           </div>
-          <div class="form-check">
-            <input id="loginRemember" class="form-check-input" type="checkbox">
-            <label class="form-check-label" for="loginRemember">
-              Continuar conectado
-            </label>
-          </div>
-          <button class="btn btn-login" type="submit">
-            Entrar
-          </button>
-        </form>
-        <div class="login-links">
-          <a href="cadastro.html">
-            Criar conta
-          </a>
-          <a href="#">
-            Esqueci minha senha
-          </a>
         </div>
       </div>
     </div>
-  </div>
-  <script>
-    document.getElementById("login-form")
-      .addEventListener("submit", async function (e) {
-        e.preventDefault();
-        const email =
-          document.getElementById("loginUsername").value;
-        const senha =
-          document.getElementById("loginPassword").value;
-        try {
-          const resposta =
-            await fetch(
-              "http://localhost:8000/auth/login",
+    <script>
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const email = document.getElementById("loginUsername").value;
+          const senha = document.getElementById("loginPassword").value;
+          try {
+            const resposta = await fetch(
+              "http://54.163.99.76:8000/auth/login",
               {
                 method: "POST",
                 headers: {
-                  "Content-Type": "application/json"
+                  "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                   email: email,
-                  senha: senha
-                })
-              });
-          const dados = await resposta.json();
-
-          if (!resposta.ok) {
-            throw new Error(
-              dados.detail ||
-              "Email ou senha inválidos."
+                  senha: senha,
+                }),
+              }
             );
-          };
+            const dados = await resposta.json();
 
-          localStorage.setItem(
-            "access_token",
-            dados.access_token
-          );
-          localStorage.setItem(
-            "token_type",
-            dados.token_type
-          );
-          localStorage.setItem(
-            "usuario_email",
-            email
-          );
-          localStorage.setItem(
-            "usuario_nome",
-            dados.usuario_nome
-          );
-          window.location.href =
-            "index.html";
+            if (!resposta.ok) {
+              throw new Error(dados.detail || "Email ou senha inválidos.");
+            }
 
-        }
-        catch (erro) {
-          alert(erro.message);
-        }
-      });
-  </script>
-</body>
-
+            localStorage.setItem("access_token", dados.access_token);
+            localStorage.setItem("token_type", dados.token_type);
+            localStorage.setItem("usuario_email", email);
+            localStorage.setItem("usuario_nome", dados.usuario_nome);
+            window.location.href = "index.html";
+          } catch (erro) {
+            alert(erro.message);
+          }
+        });
+    </script>
+  </body>
 </html>
